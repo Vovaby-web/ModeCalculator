@@ -1,11 +1,56 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+  <meta charset="UTF-8">
+  <title>Сalculations></title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+      }
+      header {
+          background-color: rgb(0,36,53); /* Цвет заголовка */
+          color: white; /* Цвет текста заголовка */
+          padding: 15px;
+          text-align: right;
+          height: 20px;
+          border: 1px solid white; /* Белая рамка */
+          text-align-items:center; /* Центрирование по вертикали */
+          /*margin: 20px; /* Отступ вокруг поля */
+      }
+      .container {
+          display: flex;
+          height: calc(100vh - 60px); /* Высота блока, исключая заголовок */
+      }
+      .left-column {
+          width: 25%; /* Ширина левого столбца */
+          padding: 10px;
+          background-color: rgb(0,36,53); /* Цвет фона левого столбца */
+          border: 1px solid white; /* Белая рамка */
+      }
+      .right-column {
+          width: 75%; /* Ширина правого столбца */
+          padding: 10px;
+          background-color: #f9f9f9; /* Цвет фона правого столбца */
+          border: 1px solid white; /* Белая рамка */
+      }
+  </style>
 </head>
 <body>
-<h1>Welcome, <span th:text="${username}"></span></h1>
-<a href="/main?Logout">Log out</a>
+<header>
+  <h1>Welcome <span th:text="${username}"></span></h1>
+  <a href="/main?Logout">Logout</a>
+</header>
+<div class="container">
+  <div class="left-column">
+    <h2>Параметры</h2>
+    <p>Здесь можно заносить параметры...</p>
+  </div>
+  <div class="right-column">
+    <h2>Рисовать</h2>
+    <p>Здесь можно что-то рисовать...</p>
+  </div>
+</div>
 </body>
 </html>
