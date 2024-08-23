@@ -13,13 +13,10 @@ public class LoginController {
   }
   @GetMapping("/")
   public String loginGet() {
-    return "login.html";
+    return "home.html";
   }
   @PostMapping("/")
-  public String loginPost(
-      @RequestParam String username,
-      @RequestParam String password,
-      Model model) {
+  public String loginPost(@RequestParam String username,@RequestParam String password,Model model) {
     loginProcessor.setUsername(username);
     loginProcessor.setPassword(password);
     boolean loggedIn = loginProcessor.login();
@@ -27,7 +24,7 @@ public class LoginController {
       return "redirect:/main";
     }
     model.addAttribute("message", "Login failed!");
-    return "login.html";
+    return "home.html";
   }
 }
 

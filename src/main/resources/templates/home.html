@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>pipeline</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh; /* Высота 100% от высоты окна */
+            background-image: url('images/back.png'); /* Путь к изображению */
+            background-size: cover; /* Растянуть изображение на весь экран */
+            background-position: center; /* Центрировать изображение */
+            background-repeat: no-repeat; /* Не повторять изображение */
+            display: flex; /* Для центрирования содержимого */
+            justify-content: center; /* Центрировать по горизонтали */
+            align-items: center; /* Центрировать по вертикали */
+        }
+        .container {
+            position: relative;
+            width: 400px; /* Ширина контейнера */
+        }
+        form {
+            position: absolute; /* Позиционирование формы внутри контейнера */
+            top: 50%; /* Смещение вниз на 50% от высоты контейнера */
+            left: 50%; /* Смещение вправо на 50% от ширины контейнера */
+            transform: translate(-50%, -50%); /* Центрирование формы по центру изображения */
+            background-color: rgba(255, 255, 255, 0.8); /* Фоновый цвет формы с прозрачностью */
+            padding: 20px; /* Отступы для формы */
+            border-radius: 8px; /* Закругленные углы */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+        }
+        h1 {
+            position: absolute; /* Абсолютное позиционирование */
+            font-size: 60px;
+            top: 20px; /* Отступ сверху */
+            left: 50%; /* Центрируем по горизонтали */
+            transform: translateX(-50%); /* Центрируем текст относительно его ширины */
+            text-align: center; /* Центрирование текста */
+            text-shadow: 2px 2px 5px rgba(255, 204, 255, 0.5); /* Тень текста */
+            /* 2px 2px — это смещение тени по оси X и Y соответственно.
+               5px — это размытие тени.
+               rgba(0, 0, 0, 0.5) — это цвет тени с полупрозрачностью.
+               Вы можете изменить его, выбрав нужный вам цвет. */
+        }
+    </style>
+</head>
+<body>
+<h1>Расчет режимов работы трубопровода</h1>
+<div class="container">
+    <form action="/" method="post">
+        User: <input type="text" name="username"/><br/>
+        Password: <input type="password" name="password"/><br/>
+        <button type="submit">Login</button>
+    </form>
+    <p th:text="${message}"></p>
+</div>
+</body>
+</html>
+

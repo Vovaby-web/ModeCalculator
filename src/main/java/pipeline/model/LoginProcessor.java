@@ -15,7 +15,7 @@ public class LoginProcessor {
     String username = this.getUsername();
     String password = this.getPassword();
     boolean loginResult = false;
-    if ("natalie".equals(username) && "password".equals(password)) {
+    if ("natalie".equals(username) && "11".equals(password)) {
       loginResult = true;
       loggedService.setUsername(username);
     }
