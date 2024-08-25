@@ -23,7 +23,7 @@ public class LoginController {
     if (loggedIn) {
       return "redirect:/main";
     }
-    model.addAttribute("message", "Login failed!");
+    model.addAttribute("message", "Неверный пароль!");
     return "home.html";
   }
 }

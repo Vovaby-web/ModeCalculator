@@ -32,8 +32,8 @@
         }
         h1 {
             position: absolute; /* Абсолютное позиционирование */
-            font-size: 60px;
-            top: 20px; /* Отступ сверху */
+            font-size: 70px;
+            top: 10%; /* Отступ сверху */
             left: 50%; /* Центрируем по горизонтали */
             transform: translateX(-50%); /* Центрируем текст относительно его ширины */
             text-align: center; /* Центрирование текста */
@@ -43,6 +43,7 @@
                rgba(0, 0, 0, 0.5) — это цвет тени с полупрозрачностью.
                Вы можете изменить его, выбрав нужный вам цвет. */
         }
+
     </style>
 </head>
 <body>
@@ -52,8 +53,9 @@
         User: <input type="text" name="username"/><br/>
         Password: <input type="password" name="password"/><br/>
         <button type="submit">Login</button>
+        <p th:text="${message}"></p>
     </form>
-    <p th:text="${message}"></p>
+
 </div>
 </body>
 </html>
