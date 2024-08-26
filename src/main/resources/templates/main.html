@@ -9,68 +9,93 @@
           margin: 0;
           padding: 0;
       }
+
       header {
-        background-color: rgb(0, 36, 53);
-        color: white;
-        display: flex; /* Используем Flexbox для размещения элементов */
-        justify-content: space-between; /* Размещаем элементы по краям */
-        align-items: center; /* Центрируем элементы по вертикали */
-        padding: 10px; /* Отступы вокруг контейнера */
-        margin: 0; /* Убираем отступы у блока */
-        border-radius: 8px; /* Закругленные углы */
+          background-color: rgb(0, 36, 53);
+          color: rgb(255, 128, 128);
+          display: flex; /* Используем Flexbox для размещения элементов */
+          justify-content: space-between; /* Размещаем элементы по краям */
+          align-items: center; /* Центрируем элементы по вертикали */
+          padding: 10px; /* Отступы вокруг контейнера */
+          margin: 0; /* Убираем отступы у блока */
+          border-radius: 8px; /* Закругленные углы */
       }
+
       h1, h2 {
-        margin: 0; /* Убираем отступы по умолчанию */
+          margin: 0; /* Убираем отступы по умолчанию */
       }
+
       h2 a {
-        color: white; /* Цвет ссылки соответствует цвету текста */
-        text-decoration: none; /* Убираем подчеркивание у ссылки */
+          color: white; /* Цвет ссылки соответствует цвету текста */
+          text-decoration: none; /* Убираем подчеркивание у ссылки */
       }
+
       h2 a:hover {
-        text-decoration: underline; /* Подчеркиваем ссылку при наведении */
+          text-decoration: underline; /* Подчеркиваем ссылку при наведении */
       }
+
       .container {
           display: flex;
           height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
       }
+
       .left-column {
           width: 20%; /* Ширина левого столбца */
           padding: 10px;
-          background-color: rgb(0,36,53); /* Цвет фона левого столбца */
-          color: white;
+          background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
+          color: rgb(155, 222, 255);
           border: 1px solid white; /* Белая рамка */
           border-radius: 8px; /* Закругленные углы */
       }
+
+      form {
+          position: absolute; /* Позиционирование формы внутри контейнера */
+          background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
+          padding: 20px; /* Отступы для формы */
+          border-radius: 8px; /* Закругленные углы */
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+          font-size: 13px;
+          border: 1px solid white; /* Белая рамка */
+          color: white;
+      }
+
       .right-column {
           width: 80%; /* Ширина правого столбца */
-          padding: 10px;
-          background-color: #f9f9f9; /* Цвет фона правого столбца */
+          padding: 10px; /* Отступы для формы */
+          background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
+          color: rgb(155, 222, 255);
           border: 1px solid white; /* Белая рамка */
           border-radius: 8px; /* Закругленные углы */
           align-items: center; /* Центрируем элементы по вертикали */
       }
-      #inputBlock {
-        padding: 20px;
-        margin: 5px;
-        border: 1px solid #000;
-        width: 250px;
-        display: flex;
-        flex-direction: column;
+
+      .right {
+          width: 98%; /* Устанавливаем ширину 100% */
+          height: 93%; /* Устанавливаем высоту 90% */
+          padding: 10px; /* Отступы для формы */
+          color: rgb(155, 222, 255);
+          background: white;
+          background-image: url('images/Scheme.png'); /* Путь к изображению */
+          background-size: contain; /* Изображение будет полностью показано */
+          background-position: center; /* Центрировать изображение */
+          background-repeat: no-repeat; /* Не повторять изображение */
+      }
+      canvas {
+          width: 65%; /* Устанавливаем ширину 100% */
+          height: 60%; /* Устанавливаем высоту 90% */
+          border: 1px solid #000;
+          position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
+          top: 5%; /* Смещение вниз */
+          left: 18%; /* Смещение вправо */
       }
 
-      #drawingBlock {
-        width: 100%;
-        height: 90%;
-        border: 1px solid #000;
-        position: relative;
+      .input-short {
+          width: 80px; /* Установите желаемую ширину */
+          margin-left: 5px;
       }
 
-      .line {
-        position: absolute;
-        height: 2px; /* Высота линии */
-        background-color: red; /* Фоновый цвет линии */
-        width: 0; /* Начальная ширина линии */
-        transition: width 0.5s ease; /* Плавное появление линии */
+      .label-spacing {
+          margin-left: 10px; /* Установите нужное значение отступа */
       }
   </style>
 </head>
@@ -82,34 +107,56 @@
 <div class="container">
   <div class="left-column">
     <h2>Параметры</h2>
-    <div id="inputBlock">
-      <label for="lineLength">Длина линии (px):</label>
-      <input type="number" id="lineLength" value="100" min="1" max="360">
-      <label for="lineColor">Цвет линии:</label>
-      <input type="color" id="lineColor" value="#ff0000">
-      <button id="drawButton">Нарисовать линию</button>
-    </div>
+    <form action="/main" method="post">
+      <h3 style="font-size: 14px">Параметры трубопровода</h3>
+      <span class="label-spacing">Длина (км):</span>
+      <input type="number" name="lineLength" class="input-short"/><br/>
+      <span class="label-spacing">Диаметр (мм):</span>
+      <input type="number" name="lineColor" class="input-short"/><br/>
+      <h3 style="font-size: 14px">Параметры нефтепродукта</h3>
+      <span class="label-spacing">Плотность (кг/м3):</span>
+      <input type="number" name="lineLength" class="input-short"/><br/>
+      <h3 style="font-size: 14px">Параметры насоса на головной станции</h3>
+      <span class="label-spacing">Марка насоса:</span>
+      <input type="number" name="lineLength" class="input-short"/><br/>
+      <h3 style="font-size: 14px"></h3>
+      <button type="submit" style="background-color: rgb(255, 255, 255); border-radius: 8px;font-size: 16px">
+        Рассчитать режим
+      </button>
+      <p th:text="${message}" style="color: rgb(255, 128, 128); font-size: 16px"></p>
+    </form>
   </div>
   <div class="right-column">
     <h2>Расчет режима работы трубопровода</h2>
-    <div id="drawingBlock">
-      <div class="line" id="line"></div>
+    <div class="right">
+      <canvas id="lineCanvas"></canvas>
     </div>
   </div>
 </div>
 <script>
-  const line = document.getElementById("line");
-  const lineLengthInput = document.getElementById("lineLength");
-  const lineColorInput = document.getElementById("lineColor");
-  const drawButton = document.getElementById("drawButton");
-  drawButton.addEventListener("click", function() {
-    // Получаем значения длины и цвета линии
-    const length = lineLengthInput.value;
-    const color = lineColorInput.value;
-    // Устанавливаем длину и цвет линии
-    line.style.width = length + 'px';
-    line.style.backgroundColor = color;
-  });
+    const lineLength = [[${lineLength}]]; // Замените на динамическое значение из модели
+    // Получаем контекст канваса
+    const canvas = document.getElementById('lineCanvas');
+    const context = canvas.getContext('2d');
+    // Установка реальных размеров canvas (с учетом размера элемента)
+    canvas.width = canvas.clientWidth;
+    canvas.height = canvas.clientHeight;
+    // Пример рисования
+    context.strokeStyle = 'black';
+    context.lineWidth = 2;
+    context.beginPath();
+    context.moveTo(0, canvas.height/10);
+    context.lineTo(canvas.width, canvas.height-canvas.height/10);
+    context.stroke();
+    // Настройка шрифта для текста
+    context.fillStyle = 'black'; // Цвет текста
+    context.font = '20px Arial'; // Шрифт и размер текста
+    context.textAlign = 'center'; // Выравнивание текста
+    context.textBaseline = 'middle'; // Вертикальное выравнивание
+
+    // Добавление текста на canvas
+    const text = "Ваш текст здесь"; // Замените на ваш текст
+    context.fillText(text, canvas.width / 2, canvas.height / 2); // Позиция текста в центре canvas
 </script>
 </body>
 </html>
