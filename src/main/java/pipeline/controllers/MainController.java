@@ -2,16 +2,17 @@ package pipeline.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pipeline.services.LineService;
+import pipeline.model.ModesProcessor;
+import pipeline.services.ModesService;
 import pipeline.services.LoggedService;
 @Controller
 public class MainController {
   private final LoggedService loggedService;
-  private final LineService lineService;
+  private final ModesProcessor modesProcessor;
   private String username;
-  public MainController(LoggedService loggedService, LineService lineService) {
+  public MainController(LoggedService loggedService, ModesProcessor modesProcessor) {
     this.loggedService = loggedService;
-    this.lineService = lineService;
+    this.modesProcessor = modesProcessor;
   }
   @GetMapping("/main")
   public String homeGet(
@@ -27,22 +28,27 @@ public class MainController {
     model.addAttribute("username", username);
     return "main";
   }
-  @PostMapping( "/main")
+  @PostMapping("/main")
   public String homePost(
-      @RequestParam(required = false) String lineLength,
-      @RequestParam(required = false) String lineColor,
+      @RequestParam("lineLength") int lineLength,
+      @RequestParam(required = false) String pointStart,
+      @RequestParam(required = false) String pointEnd,
+      @RequestParam(required = false) String diameter,
+      @RequestParam(required = false) String density,
+      @RequestParam(required = false) String pumpBrand,
       Model model) {
     model.addAttribute("username", username);
-    if (lineLength.isEmpty()||lineColor.isEmpty()){
-      model.addAttribute("message", "Введите параметры");
-      model.addAttribute("lineLength", 0);
-      model.addAttribute("lineColor", 0);
-    }else {
-      lineService.setLineLength(lineLength);
-      lineService.setLineColor(lineColor);
-      System.out.println(lineService.getLineColor());
-      model.addAttribute("lineLength", Integer.parseInt(lineService.getLineLength()));
-      model.addAttribute("lineColor", lineColor);
+    modesProcessor.set(lineLength,pointStart,pointEnd,diameter,density,pumpBrand);
+    if ("Yes".equals(modesProcessor.out())) {
+      ModesService m=modesProcessor.model();
+      model.addAttribute("lineLength", 300);
+      model.addAttribute("line",1);
+      // Отображаем элементы, которые требуется нарисовать
+      model.addAttribute("showPressure", true);
+    } else {
+      ModesService m=modesProcessor.model();
+      model.addAttribute("message", modesProcessor.out());
+      model.addAttribute("lineLength",300);
     }
     return "main";
   }
