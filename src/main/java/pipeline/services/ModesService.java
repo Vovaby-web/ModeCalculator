@@ -5,18 +5,18 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 public class ModesService {
   private int lineLength;
-  private String pointStart;
-  private String pointEnd;
-  private String diameter;
-  private String density;
-  private String pumpBrand;
+  private double pointStart;
+  private double pointEnd;
+  private double diameter;
+  private double density;
+  private double pumpBrand;
   public ModesService() {
     lineLength=0;
-    pointStart="";
-    pointEnd="";
-    diameter="";
-    density="";
-    pumpBrand="";
+    pointStart=0;
+    pointEnd=0;
+    diameter=0;
+    density=0;
+    pumpBrand=0;
   }
   public int getLineLength() {
     return lineLength;
@@ -24,34 +24,34 @@ public class ModesService {
   public void setLineLength(int lineLength) {
     this.lineLength = lineLength;
   }
-  public String getPointStart() {
+  public double getPointStart() {
     return pointStart;
   }
-  public void setPointStart(String pointStart) {
+  public void setPointStart(double pointStart) {
     this.pointStart = pointStart;
   }
-  public String getPointEnd() {
+  public double getPointEnd() {
     return pointEnd;
   }
-  public void setPointEnd(String pointEnd) {
+  public void setPointEnd(double pointEnd) {
     this.pointEnd = pointEnd;
   }
-  public String getDiameter() {
+  public double getDiameter() {
     return diameter;
   }
-  public void setDiameter(String diameter) {
+  public void setDiameter(double diameter) {
     this.diameter = diameter;
   }
-  public String getDensity() {
+  public double getDensity() {
     return density;
   }
-  public void setDensity(String density) {
+  public void setDensity(double density) {
     this.density = density;
   }
-  public String getPumpBrand() {
+  public double getPumpBrand() {
     return pumpBrand;
   }
-  public void setPumpBrand(String pumpBrand) {
+  public void setPumpBrand(double pumpBrand) {
     this.pumpBrand = pumpBrand;
   }
 }

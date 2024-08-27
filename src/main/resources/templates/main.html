@@ -119,20 +119,26 @@
     <form action="/main" method="post">
       <h3 style="font-size: 14px">Параметры трубопровода</h3>
       <span class="label-spacing">Длина (км):</span>
-      <input type="number" name="lineLength" class="input-short" th:value="${lineLength}"/><br/>
+      <input type="number" name="lineLength" class="input-short" th:value="${lineLength}"
+      min="1" max="10000" step="1"/><br/>
       <br><span class="label-spacing">Геодезическая отметка</span></br>
       <span class="label-spacing">в начале участка (м):</span>
-      <input type="number" name="pointStart" class="input-short" th:value="${pointStart}"/><br/>
+      <input type="number" name="pointStart" class="input-short" th:value="${pointStart}"
+      min="1" max="1000" step="0.1"/><br/>
       <br><span class="label-spacing">Геодезическая отметка</span></br>
       <span class="label-spacing">в конце участка (м):</span>
-      <input type="number" name="pointEnd" class="input-short" th:value="${pointEnd}"/><br/>
+      <input type="number" name="pointEnd" class="input-short" th:value="${pointEnd}"
+      min="1" max="1000" step="0.1"/><br/>
       <br><span class="label-spacing">Диаметр (мм):</span>
-      <input type="number" name="diameter" class="input-short" th:value="${diameter}"/><br/>
+      <input type="number" name="diameter" class="input-short" th:value="${diameter}"
+      min="108" max="1020" step="0.1"/><br/>
       <h3 style="font-size: 14px">Параметры нефтепродукта</h3>
       <span class="label-spacing">Плотность (кг/м3):</span>
-      <input type="number" name="density" class="input-short" th:value="${density}"/><br/>
+      <input type="number" name="density" class="input-short" th:value="${density}"
+      min="720" max="860" step="0.1"/><br/>
       <h3 style="font-size: 14px">Параметры насоса головной станции</h3>
-      <span class="label-spacing">Марка насоса:</span> <select name="pumpBrand" class="input-short">
+      <span class="label-spacing">Марка насоса:</span>
+      <select name="pumpBrand" class="input-short">
       <option value="">-- Выберите --</option>
       <option value="brand1">НМ1250-260</option>
       <option value="brand2">НМ710-280</option>

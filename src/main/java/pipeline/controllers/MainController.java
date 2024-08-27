@@ -31,24 +31,26 @@ public class MainController {
   @PostMapping("/main")
   public String homePost(
       @RequestParam("lineLength") int lineLength,
-      @RequestParam(required = false) String pointStart,
-      @RequestParam(required = false) String pointEnd,
-      @RequestParam(required = false) String diameter,
-      @RequestParam(required = false) String density,
-      @RequestParam(required = false) String pumpBrand,
+      @RequestParam(required = false) double pointStart,
+      @RequestParam(required = false) double pointEnd,
+      @RequestParam(required = false) double diameter,
+      @RequestParam(required = false) double density,
+      @RequestParam(required = false) double pumpBrand,
       Model model) {
     model.addAttribute("username", username);
-    modesProcessor.set(lineLength,pointStart,pointEnd,diameter,density,pumpBrand);
+    modesProcessor.set(lineLength, pointStart, pointEnd, diameter, density, pumpBrand);
+    ModesService m = modesProcessor.model();
+    model.addAttribute("lineLength", m.getLineLength());
+    model.addAttribute("pointStart", m.getPointStart());
+    model.addAttribute("pointEnd", m.getPointEnd());
+    model.addAttribute("diameter", m.getDiameter());
+    model.addAttribute("density", m.getDensity());
     if ("Yes".equals(modesProcessor.out())) {
-      ModesService m=modesProcessor.model();
-      model.addAttribute("lineLength", 300);
-      model.addAttribute("line",1);
       // Отображаем элементы, которые требуется нарисовать
       model.addAttribute("showPressure", true);
+      model.addAttribute("line", 1);
     } else {
-      ModesService m=modesProcessor.model();
       model.addAttribute("message", modesProcessor.out());
-      model.addAttribute("lineLength",300);
     }
     return "main";
   }
