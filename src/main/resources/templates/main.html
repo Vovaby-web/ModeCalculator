@@ -120,33 +120,34 @@
       <h3 style="font-size: 14px">Параметры трубопровода</h3>
       <span class="label-spacing">Длина (км):</span>
       <input type="number" name="lineLength" class="input-short" th:value="${lineLength}"
-      min="1" max="10000" step="1"/><br/>
+             min="1" max="10000" step="1"/><br/>
       <br><span class="label-spacing">Геодезическая отметка</span></br>
       <span class="label-spacing">в начале участка (м):</span>
       <input type="number" name="pointStart" class="input-short" th:value="${pointStart}"
-      min="1" max="1000" step="0.1"/><br/>
+             min="1" max="1000" step="0.1"/><br/>
       <br><span class="label-spacing">Геодезическая отметка</span></br>
       <span class="label-spacing">в конце участка (м):</span>
       <input type="number" name="pointEnd" class="input-short" th:value="${pointEnd}"
-      min="1" max="1000" step="0.1"/><br/>
+             min="1" max="1000" step="0.1"/><br/>
       <br><span class="label-spacing">Диаметр (мм):</span>
       <input type="number" name="diameter" class="input-short" th:value="${diameter}"
-      min="108" max="1020" step="0.1"/><br/>
+             min="108" max="1020" step="0.1"/><br/>
       <h3 style="font-size: 14px">Параметры нефтепродукта</h3>
       <span class="label-spacing">Плотность (кг/м3):</span>
       <input type="number" name="density" class="input-short" th:value="${density}"
-      min="720" max="860" step="0.1"/><br/>
+             min="720" max="860" step="0.1"/><br/>
       <h3 style="font-size: 14px">Параметры насоса головной станции</h3>
       <span class="label-spacing">Марка насоса:</span>
-      <select name="pumpBrand" class="input-short">
-      <option value="">-- Выберите --</option>
-      <option value="brand1">НМ1250-260</option>
-      <option value="brand2">НМ710-280</option>
-    </select><br/>
+      <select name="pumpBrand" class="input-short" th:field="*{pumpBrand}">
+        <option value="">-- Выберите --</option>
+        <option value="brand1" th:value="'brand1'">НМ1250-260</option>
+        <option value="brand2" th:value="'brand2'">НМ710-280</option>
+      </select><br/>
       <h3 style="font-size: 14px"></h3>
       <button type="submit" style="background-color: rgb(255, 255, 255);
        border-radius: 8px;font-size: 16px">
-       Рассчитать режим </button>
+        Рассчитать режим
+      </button>
       <div class="message-block">
         <p th:text="${message}" style="color: rgb(255, 128, 128); font-size: 16px"></p>
       </div>
@@ -155,7 +156,7 @@
   <div class="right-column">
     <h2>Расчет режима работы трубопровода</h2>
     <div class="pressure" th:classappend="${showPressure} ? 'show'">
-      <h2>Давление</h2>
+      <h2 style="margin-top: 5px;">Давление</h2>
     </div>
     <div class="right">
       <canvas id="lineCanvas" th:classappend="${showPressure} ? 'show'"></canvas>
