@@ -4,16 +4,16 @@ import org.springframework.web.context.annotation.SessionScope;
 @Service
 @SessionScope
 public class ModesService {
-  private int lineLength;
+  private Integer lineLength;
   private Double pointStart;
   private Double pointEnd;
   private Double diameter;
   private Double density;
   private String pumpBrand;
-  public int getLineLength() {
+  public Integer getLineLength() {
     return lineLength;
   }
-  public void setLineLength(int lineLength) {
+  public void setLineLength(Integer lineLength) {
     this.lineLength = lineLength;
   }
   public Double getPointStart() {

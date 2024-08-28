@@ -5,20 +5,21 @@ import org.springframework.web.bind.annotation.*;
 import pipeline.model.ModesProcessor;
 import pipeline.services.ModesService;
 import pipeline.services.LoggedService;
+import pipeline.services.ResultService;
 @Controller
 public class MainController {
   private final LoggedService loggedService;
+  private final ModesService modesService;
   private final ModesProcessor modesProcessor;
   private String username;
-  public MainController(LoggedService loggedService, ModesProcessor modesProcessor) {
+  public MainController(LoggedService loggedService, ModesService modesService,
+                        ModesProcessor modesProcessor) {
     this.loggedService = loggedService;
+    this.modesService = modesService;
     this.modesProcessor = modesProcessor;
   }
   @GetMapping("/main")
-  public String homeGet(
-      @RequestParam(required = false) String Logout,
-      @RequestParam(required = false) String pumpBrand,
-      Model model) {
+  public String homeGet(@RequestParam(required = false) String Logout, Model model) {
     if (Logout != null) {
       loggedService.setUsername(null);
     }
@@ -27,33 +28,22 @@ public class MainController {
       return "redirect:/";
     }
     model.addAttribute("username", username);
-    model.addAttribute("pumpBrand", "");
+    model.addAttribute("form", modesService);
     return "main";
   }
   @PostMapping("/main")
-  public String homePost(
-      @RequestParam("lineLength") int lineLength,
-      @RequestParam(required = false) Double pointStart,
-      @RequestParam(required = false) Double pointEnd,
-      @RequestParam(required = false) Double diameter,
-      @RequestParam(required = false) Double density,
-      @RequestParam(required = false) String pumpBrand,
-      Model model) {
+  public String homePost(@ModelAttribute ModesService modesService, Model model) {
     model.addAttribute("username", username);
-    modesProcessor.set(lineLength, pointStart, pointEnd, diameter, density, pumpBrand);
-    ModesService m = modesProcessor.model();
-    model.addAttribute("lineLength", m.getLineLength());
-    model.addAttribute("pointStart", m.getPointStart());
-    model.addAttribute("pointEnd", m.getPointEnd());
-    model.addAttribute("diameter", m.getDiameter());
-    model.addAttribute("density", m.getDensity());
-    model.addAttribute("pumpBrand", m.getPumpBrand());
-    if ("Yes".equals(modesProcessor.out())) {
+    model.addAttribute("form", modesService);
+    if ("Yes".equals(modesProcessor.outError(modesService))) {
+      ResultService res= modesProcessor.outResult(modesService);
       // Отображаем элементы, которые требуется нарисовать
       model.addAttribute("showPressure", true);
       model.addAttribute("line", 1);
-    } else {
-      model.addAttribute("message", modesProcessor.out());
+      model.addAttribute("presout", res.getPres_out_head_1());
+      model.addAttribute("presin", res.getPres_in_final_1());
+    }else {
+      model.addAttribute("message", modesProcessor.outError(modesService));
     }
     return "main";
   }
