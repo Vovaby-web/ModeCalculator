@@ -1,7 +1,7 @@
-package pipeline.services;
+package pipeline.models;
 import org.springframework.stereotype.Component;
 @Component
-public class ResultService {
+public class ResultComponent {
  private Double pres_in_head_1;
  private Double pres_out_head_1;
   private Double pres_in_head_2;
