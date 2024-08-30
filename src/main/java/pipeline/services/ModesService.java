@@ -2,15 +2,20 @@ package pipeline.services;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import pipeline.models.ModesComponent;
+import pipeline.models.SelectSaveParameter;
 import pipeline.models.ResultComponent;
+import pipeline.repository.DataBaseRepository;
 
 import java.util.List;
 @Service
 @RequestScope
 public class ModesService {
   private final ResultComponent resultComponent;
-  public ModesService(ResultComponent resultComponent) {
+  private final DataBaseRepository dataBaseRepository;
+  public ModesService(ResultComponent resultComponent,
+                      DataBaseRepository dataBaseRepository) {
     this.resultComponent = resultComponent;
+    this.dataBaseRepository = dataBaseRepository;
   }
   public String outError(ModesComponent modesComponent) {
     String str = "Yes";
@@ -36,7 +41,14 @@ public class ModesService {
     resultComponent.setPres_in_final_1(modesComponent.getPointEnd());
     return resultComponent;
   }
-  public List<String> getAllPumps(){
-    return List.of("brand1", "brand2");
+  public List<SelectSaveParameter> loadName(String login) {
+    // Здесь вы можете получить данные из базы данных, например
+    return dataBaseRepository.findUsername(login);
+  }
+  public void saveParameters(ModesComponent modesComponent, String login) {
+    dataBaseRepository.saveBaseParameter(modesComponent,login);
+  }
+  public ModesComponent loadParameter(String nameParameter, String login) {
+    return dataBaseRepository.loadParameters(nameParameter,login);
   }
 }

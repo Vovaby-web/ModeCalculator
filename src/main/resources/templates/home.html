@@ -132,10 +132,15 @@
 <header>
   <h1>Добро пожаловать, <span th:text="${username}"></span></h1>
   <div class="blockin">
-    <form action="/main" method="post" th:object="${headform}">
-      <span class="label-spacing">Сохраненные параметры</span> <select th:field="*{pumpBase}" class="input-short">
+    <form action="/load" method="post" th:object="${headform}">
+      <span class="label-spacing">Сохраненные параметры</span>
+      <select th:field="*{selectMode}" class="input-short">
       <option value="">-- Выберите --</option>
-      <option th:each="pump : ${pumps}" th:value="${pump.value}" th:text="${pump.name}" th:selected="${headform.pumpBase == pump.value}"></option>
+      <option th:each="mode : ${headform.modes}"
+        th:value="${mode.value}"
+        th:text="${mode.name}"
+        th:selected="${headform.getSelectMode() == mode.value}">
+      </option>
     </select>
       <button type="submit" style="background-color: rgb(255, 255, 255);
        border-radius: 8px;font-size: 16px;">Отобразить

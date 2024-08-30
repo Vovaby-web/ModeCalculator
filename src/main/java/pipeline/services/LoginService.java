@@ -17,7 +17,7 @@ public class LoginService {
   public boolean login() {
     String username = loggedComponent.getUsername();
     String password = loggedComponent.getPassword();
-    List<LoggedComponent> user=dataBaseRepository.findAll();
+    List<LoggedComponent> user=dataBaseRepository.findLogin();
     for (LoggedComponent comp:user){
       if (comp.getUsername().equals(username)&&comp.getPassword().equals(password)){
         loggedComponent.setUsername(username);
@@ -37,5 +37,4 @@ public class LoginService {
   public LoggedComponent getLoggedComponent() {
     return loggedComponent;
   }
-
 }

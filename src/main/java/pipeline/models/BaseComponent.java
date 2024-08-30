@@ -5,11 +5,18 @@ import java.util.List;
 @Component
 @SessionScope
 public class BaseComponent {
-  private List<String> pumpBase;
-  public List<String> getPumpBase() {
-    return pumpBase;
+  private List<SelectSaveParameter> modes;
+  private Integer selectMode;
+  public List<SelectSaveParameter> getModes() {
+    return modes;
   }
-  public void setPumpBase(List<String> pumpBase) {
-    this.pumpBase = pumpBase;
+  public void setModes(List<SelectSaveParameter> modes) {
+    this.modes = modes;
+  }
+  public Integer getSelectMode() {
+    return selectMode;
+  }
+  public void setSelectMode(Integer selectMode) {
+    this.selectMode = selectMode;
   }
 }

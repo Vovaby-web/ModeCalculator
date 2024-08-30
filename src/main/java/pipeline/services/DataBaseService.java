@@ -12,7 +12,7 @@ public class DataBaseService {
         "login varchar(50) NOT NULL," +
         "password varchar(50) NOT NULL);";
     jdbcTemplate.execute(sql);
-    String sql_1 = "CREATE TABLE IF NOT EXISTS parametr (" +
+    String sql_1 = "CREATE TABLE IF NOT EXISTS parameters (" +
         "id SERIAL PRIMARY KEY," +
         "login varchar(50) NOT NULL," +
         "nameSave varchar(50) NOT NULL," +

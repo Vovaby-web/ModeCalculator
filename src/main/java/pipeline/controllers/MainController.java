@@ -10,6 +10,8 @@ import pipeline.services.LoginService;
 @Controller
 public class MainController {
   LoginService loginService;
+
+  //Для создания таблиц
   private final DataBaseService databaseService;
   public MainController(LoginService loginService,
                         DataBaseService databaseService) {
@@ -18,7 +20,8 @@ public class MainController {
   }
   @GetMapping("/")
   public String loginGet() {
-    databaseService.createTable();
+    // Создаем один раз таблицы и хватит
+    // databaseService.createTable();
     return "main.html";
   }
   @PostMapping("/")

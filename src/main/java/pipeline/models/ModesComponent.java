@@ -12,6 +12,15 @@ public class ModesComponent {
   private Double diameter;
   private Double density;
   private String pumpBrand;
+  public void saveMode(ModesComponent modesComponent){
+    setNameSave(modesComponent.getNameSave());
+    setLineLength(modesComponent.getLineLength());
+    setPointStart(modesComponent.getPointStart());
+    setPointEnd(modesComponent.getPointEnd());
+    setDiameter(modesComponent.getDiameter());
+    setDensity(modesComponent.getDensity());
+    setPumpBrand(modesComponent.getPumpBrand());
+  }
   public Integer getLineLength() {
     return lineLength;
   }
