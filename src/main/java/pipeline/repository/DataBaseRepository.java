@@ -41,21 +41,6 @@ public class DataBaseRepository {
         modesComponent.getDensity(),
         modesComponent.getPumpBrand());
   }
-  public List<ModesComponent> findParameters() {
-    String sql = "SELECT * FROM parameters";
-    RowMapper<ModesComponent> rowMapper = (r, i) -> {
-      ModesComponent rowObject = new ModesComponent();
-      rowObject.setNameSave(r.getString("nameSave"));
-      rowObject.setLineLength(r.getInt("lineLength"));
-      rowObject.setPointStart(r.getDouble("pointStart"));
-      rowObject.setPointEnd(r.getDouble("pointEnd"));
-      rowObject.setDiameter(r.getDouble("diameter"));
-      rowObject.setDensity(r.getDouble("density"));
-      rowObject.setPumpBrand(r.getString("pumpBrand"));
-      return rowObject;
-    };
-    return jdbc.query(sql, rowMapper);
-  }
   public List<SelectSaveParameter> findUsername(String l) {
     String sql = "SELECT id,nameSave FROM parameters WHERE login = '" + l + "'";
     RowMapper<SelectSaveParameter> rowMapper = (r, i) -> {
@@ -66,10 +51,10 @@ public class DataBaseRepository {
     };
     return jdbc.query(sql, rowMapper);
   }
-  public ModesComponent loadParameters(String nameParameter, String l) {
-    String sql = "SELECT * FROM parameters;" +
-        "WHERE nameSave = '" + nameParameter + "';" +
-        "WHERE login = '" + l + "';";
+  public ModesComponent loadParameters(Integer id, String l) {
+    String sql = "SELECT * FROM parameters" +
+        " WHERE id = " + id +
+        " AND login = '" + l + "';";
     RowMapper<ModesComponent> rowMapper = (r, i) -> {
       ModesComponent rowObject = new ModesComponent();
       rowObject.setNameSave(r.getString("nameSave"));
@@ -82,7 +67,7 @@ public class DataBaseRepository {
       return rowObject;
     };
     try {
-      return jdbc.queryForObject(sql, rowMapper, nameParameter);
+      return jdbc.queryForObject(sql, rowMapper);
     } catch (EmptyResultDataAccessException e) {
       // Возвращаем null или бросаем кастомное исключение
       return null; // или можно бросать собственное исключение

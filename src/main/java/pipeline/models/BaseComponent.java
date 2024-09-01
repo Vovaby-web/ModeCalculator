@@ -7,6 +7,17 @@ import java.util.List;
 public class BaseComponent {
   private List<SelectSaveParameter> modes;
   private Integer selectMode;
+  public void saveNull() {
+    setModes(null);
+    setSelectMode(0);
+  }
+  public boolean findName(String name){
+    for (SelectSaveParameter mode:getModes()){
+      if (name.equals(mode.getName()))
+        return false;
+    }
+    return true;
+  }
   public List<SelectSaveParameter> getModes() {
     return modes;
   }
@@ -19,4 +30,5 @@ public class BaseComponent {
   public void setSelectMode(Integer selectMode) {
     this.selectMode = selectMode;
   }
+
 }

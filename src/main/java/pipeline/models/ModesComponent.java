@@ -21,6 +21,15 @@ public class ModesComponent {
     setDensity(modesComponent.getDensity());
     setPumpBrand(modesComponent.getPumpBrand());
   }
+  public void saveNull(){
+    setNameSave("");
+    setLineLength(0);
+    setPointStart(0.0);
+    setPointEnd(0.0);
+    setDiameter(0.0);
+    setDensity(0.0);
+    setPumpBrand("");
+  }
   public Integer getLineLength() {
     return lineLength;
   }

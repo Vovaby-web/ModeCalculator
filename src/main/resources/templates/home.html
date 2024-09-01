@@ -211,6 +211,15 @@
           </button>
         </form>
       </div>
+      <p><form action="/print" method="post" th:object="${printForm}">
+        <button type="submit" style="background-color: rgb(255, 255, 255);
+           border-radius: 8px; font-size: 16px;"> Печать
+        </button>
+      </form>
+      <form action="/download" method="post" th:object="${downloadForm}">
+        <button type="submit" style="background-color: rgb(255, 255, 255);
+           border-radius: 8px; font-size: 16px;"> Сохранить в файл
+        </button></form>></p>
     </div>
   </div>
   <div class="right-column">
