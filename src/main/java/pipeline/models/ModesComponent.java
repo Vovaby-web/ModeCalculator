@@ -11,6 +11,7 @@ public class ModesComponent {
   private Double pointEnd;
   private Double diameter;
   private Double density;
+  private Double viscosity;
   private String pumpBrand;
   public void saveMode(ModesComponent modesComponent){
     setNameSave(modesComponent.getNameSave());
@@ -19,6 +20,7 @@ public class ModesComponent {
     setPointEnd(modesComponent.getPointEnd());
     setDiameter(modesComponent.getDiameter());
     setDensity(modesComponent.getDensity());
+    setViscosity(modesComponent.getViscosity());
     setPumpBrand(modesComponent.getPumpBrand());
   }
   public void saveNull(){
@@ -28,6 +30,7 @@ public class ModesComponent {
     setPointEnd(0.0);
     setDiameter(0.0);
     setDensity(0.0);
+    setViscosity(0.0);
     setPumpBrand("");
   }
   public Integer getLineLength() {
@@ -71,6 +74,12 @@ public class ModesComponent {
   }
   public void setPumpBrand(String pumpBrand) {
     this.pumpBrand = pumpBrand;
+  }
+  public Double getViscosity() {
+    return viscosity;
+  }
+  public void setViscosity(Double viscosity) {
+    this.viscosity = viscosity;
   }
 }
 

@@ -31,6 +31,8 @@ public class ModesService {
       str = "Отсутствует данные по диаметру трубопровода";
     } else if (modesComponent.getDensity() == null) {
       str = "Отсутствует данные по плотности нефтепродукта";
+    }else if (modesComponent.getViscosity() == null) {
+      str = "Отсутствует данные по вязкости нефтепродукта";
     } else if (modesComponent.getPumpBrand() == null || modesComponent.getPumpBrand().isEmpty()) {
       str = "Не выбран насосный агрегат";
     }

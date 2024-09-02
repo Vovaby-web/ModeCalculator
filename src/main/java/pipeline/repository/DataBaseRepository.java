@@ -30,8 +30,8 @@ public class DataBaseRepository {
   }
   public void saveBaseParameter(ModesComponent modesComponent, String login) {
     String sql = "INSERT INTO parameters (" +
-       "login, nameSave, lineLength, pointStart, pointEnd, diameter, density, pumpBrand) " +
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+       "login, nameSave, lineLength, pointStart, pointEnd, diameter, density, viscosity, pumpBrand) " +
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     jdbc.update(sql, login,
         modesComponent.getNameSave(),
         modesComponent.getLineLength(),
@@ -39,6 +39,7 @@ public class DataBaseRepository {
         modesComponent.getPointEnd(),
         modesComponent.getDiameter(),
         modesComponent.getDensity(),
+        modesComponent.getViscosity(),
         modesComponent.getPumpBrand());
   }
   public List<SelectSaveParameter> findUsername(String l) {
@@ -63,6 +64,7 @@ public class DataBaseRepository {
       rowObject.setPointEnd(r.getDouble("pointEnd"));
       rowObject.setDiameter(r.getDouble("diameter"));
       rowObject.setDensity(r.getDouble("density"));
+      rowObject.setViscosity(r.getDouble("viscosity"));
       rowObject.setPumpBrand(r.getString("pumpBrand"));
       return rowObject;
     };

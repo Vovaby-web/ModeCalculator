@@ -21,6 +21,7 @@ public class DataBaseService {
         "pointEnd double precision NOT NULL," +
         "diameter double precision NOT NULL," +
         "density double precision NOT NULL," +
+        "viscosity double precision NOT NULL," +
         "pumpBrand varchar(50) NOT NULL);";
     jdbcTemplate.execute(sql_1);
   }
