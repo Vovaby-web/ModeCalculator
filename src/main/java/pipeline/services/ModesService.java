@@ -6,13 +6,6 @@ import pipeline.models.SelectSaveParameter;
 import pipeline.models.ResultComponent;
 import pipeline.repository.DataBaseRepository;
 
-import javax.print.PrintService;
-import javax.print.PrintServiceLookup;
-import java.awt.*;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.util.List;
 @Service
 @RequestScope
@@ -26,7 +19,7 @@ public class ModesService {
   }
   public String outError(ModesComponent modesComponent) {
     String str = "Yes";
-    if (modesComponent.getNameSave() == null|| modesComponent.getNameSave().isEmpty()) {
+    if (modesComponent.getNameSave() == null || modesComponent.getNameSave().isEmpty()) {
       str = "Введено неверное название данных";
     } else if (modesComponent.getLineLength() == null) {
       str = "Отсутствует данные по длине участка";
@@ -38,51 +31,47 @@ public class ModesService {
       str = "Отсутствует данные по диаметру трубопровода";
     } else if (modesComponent.getDensity() == null) {
       str = "Отсутствует данные по плотности нефтепродукта";
-    }else if (modesComponent.getPumpBrand() == null|| modesComponent.getPumpBrand().isEmpty()) {
+    } else if (modesComponent.getPumpBrand() == null || modesComponent.getPumpBrand().isEmpty()) {
       str = "Не выбран насосный агрегат";
     }
     return str;
   }
   public ResultComponent outResult(ModesComponent modesComponent) {
-    resultComponent.setPres_out_head_1(modesComponent.getPointStart());
-    resultComponent.setPres_in_final_1(modesComponent.getPointEnd());
+    // Определяем индекс выбранного насоса
+    int i = Integer.parseInt(modesComponent.getPumpBrand());
+    resultComponent.setPomp_a(resultComponent.getPump_char_a()[i]);
+    resultComponent.setPomp_b(resultComponent.getPump_char_b()[i]);
+    Double viscosity=9*Math.pow(10,-6); // Вязкость равна 9 сСт
+
+    // Площадь сечения трубопровода
+    resultComponent.setSquare(Math.PI*Math.pow(modesComponent.getDiameter()/1000.0,2)/4.0);
+    double speed=(double)resultComponent.getPump_char_a()[i]*3600/resultComponent.getSquare();
+    resultComponent.setReynolds_number(speed*(modesComponent.getDiameter()/1000)/viscosity);
+    resultComponent.setLambda(calculationLambda(resultComponent.getReynolds_number()));
     return resultComponent;
+  }
+  public Double calculationLambda(Double reynolds_number){
+    double result;
+    if (reynolds_number<2320.0){
+      result=64.0/reynolds_number;
+    }else if (reynolds_number>=2320.0&&reynolds_number<Math.pow(10,4)){
+      double gamma=1-Math.exp(-0.2*(reynolds_number-2320.0));
+      result=(64.0/reynolds_number)*(1.0-gamma)+(0.3164/Math.pow(reynolds_number,1.0/4.0))*gamma;
+    }else if (reynolds_number>=Math.pow(10,4)&&reynolds_number<27.0/Math.exp(1.143)){
+      result=0.3164/Math.pow(reynolds_number,1.0/4.0);
+    }else if (reynolds_number>=27.0/Math.exp(1.143)&&reynolds_number<500.0/Math.exp(1.0)){
+      result=0.11*(Math.exp(1.0)+68.0/reynolds_number);
+    }else result=0.11*Math.exp(1.0/4.0);
+    return result;
   }
   public List<SelectSaveParameter> loadName(String login) {
     // Здесь вы можете получить данные из базы данных, например
     return dataBaseRepository.findUsername(login);
   }
   public void saveParameters(ModesComponent modesComponent, String login) {
-    dataBaseRepository.saveBaseParameter(modesComponent,login);
+    dataBaseRepository.saveBaseParameter(modesComponent, login);
   }
   public ModesComponent loadParameter(Integer valueParameter, String login) {
-    return dataBaseRepository.loadParameters(valueParameter,login);
-  }
-  public void printDataToPrinter(PrinterJob printerJob) {
-    printerJob.setPrintable(new Printable() {
-      @Override
-      public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
-        if (pageIndex > 0) {
-          return NO_SUCH_PAGE; // Возвращаем эту константу, если это несуществующая страница
-        }
-        Graphics2D g2d = (Graphics2D) graphics;
-        g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-        g2d.drawString("Hello, Printing!", 100, 100);
-        return PAGE_EXISTS; // указать, что страница существует
-      }
-    });
-    // Здесь можно программно выбрать принтер
-    PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
-    if (printServices.length > 0) {
-      try {
-        // Устанавливаем первый доступный принтер
-        printerJob.setPrintService(printServices[0]);
-      } catch (PrinterException e) {
-        e.printStackTrace();
-        throw new RuntimeException("Failed to set print service: " + e.getMessage());
-      }
-    } else {
-      throw new RuntimeException("No printers found");
-    }
+    return dataBaseRepository.loadParameters(valueParameter, login);
   }
 }

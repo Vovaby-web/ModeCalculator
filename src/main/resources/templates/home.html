@@ -57,8 +57,17 @@
           color: white;
           position: relative;
       }
-      .blockout {
+      .blockin-calc {
           background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
+          padding: 5px; /* Отступы для формы */
+          border-radius: 8px; /* Закругленные углы */
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+          font-size: 13px;
+          border: 1px solid white; /* Белая рамка */
+          color: white;
+          position: relative;
+          display: none; /* Скрываем элемент */
+          margin-top: 2pt;
       }
       .scrollable-box {
           background-color: rgb(0, 16, 32); /* Цвет фона левого столбца */
@@ -85,19 +94,14 @@
           color: rgb(155, 222, 255);
           position: relative;
           background: white;
-          background-image: url('images/Schemes.jpg'); /* Путь к изображению */
+          background-image: url('images/Scheme.jpg'); /* Путь к изображению */
           background-size: contain; /* Изображение будет полностью показано */
           /* background-size: cover; /* Растянуть изображение на весь экран */
           background-position: center; /* Центрировать изображение */
           background-repeat: no-repeat; /* Не повторять изображение */
       }
       canvas {
-          width: 65%; /* Устанавливаем ширину 100% */
-          height: 60%; /* Устанавливаем высоту 90% */
           border: 1px solid #000; /* Черная рамка */
-          position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
-          top: 1%; /* Смещение вниз */
-          left: 15%; /* Смещение вправо */
           display: none; /* Скрываем элемент */
       }
       .input-short {
@@ -113,7 +117,7 @@
       }
       .pressure {
           width: 80%; /* Устанавливаем ширину 100% */
-          height: 3%; /* Устанавливаем высоту 90% */
+          height: 4%; /* Устанавливаем высоту 90% */
           border: 1px solid #000;
           position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
           top: 65%; /* Смещение вниз */
@@ -158,21 +162,33 @@
           <input type="text" name="nameSave" class="input-short" th:value="${form.getNameSave()}" minlength="1" maxlength="10"/><br/>
         <h3>Параметры трубопровода</h3>
         <span class="label-spacing">Длина (км):</span>
-        <input type="number" name="lineLength" class="input-short" th:value="${form.getLineLength()}" min="1" max="10000" step="1"/><br/>
-        <br><span class="label-spacing">Геодезическая отметка</span></br><span class="label-spacing">в начале участка (м):</span>
-        <input type="number" name="pointStart" class="input-short" th:value="${form.getPointStart()}" min="1" max="1000" step="0.1"/><br/>
-        <br><span class="label-spacing">Геодезическая отметка</span></br><span class="label-spacing">в конце участка (м):</span>
-        <input type="number" name="pointEnd" class="input-short" th:value="${form.getPointEnd()}" min="1" max="1000" step="0.1"/><br/>
+        <input type="number" name="lineLength" class="input-short"
+          th:value="${form.getLineLength()}" min="1" max="10000" step="1"/><br/>
+        <br><span class="label-spacing">Геодезическая отметка</span></br>
+        <span class="label-spacing">в начале участка (м):</span>
+        <input type="number" name="pointStart" class="input-short"
+          th:value="${form.getPointStart()}" min="1" max="1000" step="0.1"/><br/>
+        <br><span class="label-spacing">Геодезическая отметка</span></br>
+        <span class="label-spacing">в конце участка (м):</span>
+        <input type="number" name="pointEnd" class="input-short"
+          th:value="${form.getPointEnd()}" min="1" max="1000" step="0.1"/><br/>
         <br><span class="label-spacing">Диаметр (мм):</span>
-        <input type="number" name="diameter" class="input-short" th:value="${form.getDiameter()}" min="108" max="1020" step="0.1"/><br/>
+        <input type="number" name="diameter" class="input-short"
+          th:value="${form.getDiameter()}" min="108" max="1020" step="0.1"/><br/>
         <h3 style="font-size: 14px; margin-left: 2pt;">Параметры нефтепродукта</h3>
-        <span class="label-spacing">Плотность (кг/м3):</span>
-        <input type="number" name="density" class="input-short" th:value="${form.getDensity()}" min="720" max="860" step="0.1"/><br/>
+        <span class="label-spacing">Плотность (кг/м<sup>3</sup>):</span>
+        <input type="number" name="density" class="input-short"
+          th:value="${form.getDensity()}" min="720" max="860" step="0.1"/><br/>
         <h3 style="font-size: 14px; margin-left: 2pt">Параметры насоса головной станции</h3>
-        <span class="label-spacing">Марка насоса:</span> <select th:field="*{pumpBrand}" class="input-short">
+        <span class="label-spacing">Марка насоса:</span>
+        <select th:field="*{pumpBrand}" class="input-short">
         <option value="">-- Выберите --</option>
-        <option value="brand1" th:value="'brand1'" th:text="'НМ1250-260'" th:selected="${form.getPumpBrand() == 'brand1'}"></option>
-        <option value="brand2" th:value="'brand2'" th:text="'НМ710-280'" th:selected="${form.getPumpBrand() == 'brand2'}"></option>
+        <option value="brand1" th:value="'0'" th:text="'НМ1250-260'"
+          th:selected="${form.getPumpBrand() == '0'}"></option>
+        <option value="brand2" th:value="'1'" th:text="'НМ2500-230'"
+          th:selected="${form.getPumpBrand() == '1'}"></option>
+        <option value="brand2" th:value="'2'" th:text="'НМ3600-230'"
+          th:selected="${form.getPumpBrand() == '2'}"></option>
       </select><br/>
         <button type="submit" style="background-color: rgb(255, 255, 255);
        border-radius: 8px;font-size: 16px; margin-top: 10px;">Рассчитать режим
@@ -182,12 +198,15 @@
         </div>
       </form>
     </div>
-    <div class="blockin">
+    <div class="blockin-calc" th:classappend="${showPressure} ? 'show'">
       <h2 style="padding: 2px;color: rgb(155, 222, 255);">Расчеты</h2>
       <div class="scrollable-box">
-        <p>Это пример текста с вертикальной полосой прокрутки.</p>
-        <p>Добавим больше текста, чтобы продемонстрировать прокрутку.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>Характеристика насоса:</p>
+        <p>a - b * Q<sup>2</sup> =
+          <span th:text="${pomp_a}"></span> -
+          <span th:text="${pomp_b}"></span> * Q<sup>2</sup>
+        </p>
+        <p>Вязкость = 9 сСт</p>
         <p>Vivamus lacinia odio vitae vestibulum.</p>
         <p>Proin sed libero enim, sed faucibus turpis.</p>
         <p>Suspendisse potenti. Cras egestas, mauris et finibus tincidunt, massa purus lacinia arcu, nec volutpat ipsum
@@ -211,33 +230,30 @@
           </button>
         </form>
       </div>
-      <p><form action="/print" method="post" th:object="${printForm}">
-        <button type="submit" style="background-color: rgb(255, 255, 255);
-           border-radius: 8px; font-size: 16px;"> Печать
-        </button>
-      </form>
-      <form action="/download" method="post" th:object="${downloadForm}">
-        <button type="submit" style="background-color: rgb(255, 255, 255);
-           border-radius: 8px; font-size: 16px;"> Сохранить в файл
-        </button></form>></p>
     </div>
   </div>
   <div class="right-column">
     <h2>Расчет режима работы трубопровода</h2>
     <div class="right">
       <div class="pressure" th:classappend="${showPressure} ? 'show'">
-        <h2 style="margin-top: 2px; margin-left: 5px;">Давление (кгс/см2) | <span th:text="'Pвых=' + ${presout}"></span>
+        <h2 style="margin-top: 1px; margin-left: 5px;">Давление (кгс/см<sup>2</sup>) |
+          <span th:text="'Pвых=' + ${presout}"></span>
           <span style="position: absolute; right: 5px;" th:text="'Pвх=' + ${presin}"></span>
         </h2>
       </div>
-      <canvas id="lineCanvas" th:classappend="${showPressure} ? 'show'"></canvas>
+      <div style="display: flex; gap: 5px; margin-top: 1pt;margin-left: 5pt">
+      <canvas style="width: 28%;"
+        id="graph1" th:classappend="${showPressure} ? 'show'"></canvas>
+       <canvas style="width: 63%;"
+        id="graph2" th:classappend="${showPressure} ? 'show'"></canvas>
+      </div>
     </div>
   </div>
 </div>
 <script>
     const line = [[${line}]]; // Замените на динамическое значение из модели
     // Получаем контекст канваса
-    const canvas = document.getElementById('lineCanvas');
+ /*   const canvas = document.getElementById('lineCanvas');
     const context = canvas.getContext('2d');
     // Установка реальных размеров canvas (с учетом размера элемента)
     canvas.width = canvas.clientWidth;
@@ -258,6 +274,51 @@
     // Добавление текста на canvas
     const text = "Ваш текст здесь"; // Замените на ваш текст
     context.fillText(text, canvas.width / 2, canvas.height / 2); // Позиция текста в центре canvas
+*/
+    function drawGraph(canvasId, performanceData, headData, title) {
+        const canvas = document.getElementById(canvasId);
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
+
+        // Масштабирование
+        const xScale = canvas.width / (Math.max(...performanceData));
+        const yScale = canvas.height / (Math.max(...headData));
+
+        // Рисуем оси
+        ctx.beginPath();
+        ctx.strokeStyle = "blue"; // Цвет линии графика
+        ctx.moveTo (0, 0);
+        ctx.lineTo(0, canvas.height); // Ось Y
+        ctx.lineTo(canvas.width, canvas.height); // Ось X
+        ctx.stroke();
+
+        // Подписи осей
+        ctx.font = "12px Arial";
+        ctx.fillText(title, 200, 20);
+        ctx.fillText("Производительность (м³/ч)", 250, 380);
+        ctx.fillText("Напор (м)", 10, 50);
+
+        // Рисуем график
+        ctx.beginPath();
+        ctx.moveTo(50, 350 - headData[0] * yScale); // Начальная точка
+
+        for (let i = 0; i < performanceData.length; i++) {
+            const x = 50 + performanceData[i] * xScale; // Координата X
+            const y = 350 - headData[i] * yScale; // Координата Y
+            ctx.lineTo(x, y); // Соединяем точки
+        }
+        ctx.strokeStyle = "blue"; // Цвет линии графика
+        ctx.stroke(); // Отображаем график
+    }
+    // Данные для первого графика
+    const performanceData1 = [0, 10, 20, 30, 40, 50, 60];
+    const headData1 = [0, 5, 10, 15, 18, 20, 22];
+    drawGraph('graph1', performanceData1, headData1, "График 1: Напор от производительности");
+    // Данные для второго графика
+    const performanceData2 = [0, 10, 20, 30, 40, 50, 60];
+    const headData2 = [0, 3, 7, 10, 12, 14, 15];
+    drawGraph('graph2', performanceData2, headData2, "График 2: Потери в напоре");
 </script>
 </body>
 </html>

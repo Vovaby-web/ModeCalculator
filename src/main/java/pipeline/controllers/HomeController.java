@@ -1,7 +1,5 @@
 package pipeline.controllers;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.IOException;
 
 @Controller
@@ -67,8 +63,10 @@ public class HomeController {
       // Отображаем элементы, которые требуется нарисовать
       model.addAttribute("showPressure", true);
       model.addAttribute("line", 1);
-      model.addAttribute("presout", res.getPres_out_head_1());
-      model.addAttribute("presin", res.getPres_in_final_1());
+      model.addAttribute("presout", res.getPres_out_head());
+      model.addAttribute("presin", res.getPres_in_final());
+      model.addAttribute("pomp_a", res.getPomp_a());
+      model.addAttribute("pomp_b", res.getPomp_b());
     } else {
       model.addAttribute("message", this.modesService.outError(modesComponent));
     }
@@ -115,18 +113,5 @@ public class HomeController {
       .headers(headers)
       .contentType(MediaType.APPLICATION_OCTET_STREAM)
       .body(bytes);
-  }
-  @PostMapping("/print")
-  public ResponseEntity<String> printData() {
-    PrinterJob printerJob = PrinterJob.getPrinterJob();
-    modesService.printDataToPrinter(printerJob);
-    try {
-      printerJob.print();
-    } catch (PrinterException e) {
-      e.printStackTrace();
-      return ResponseEntity
-        .status(HttpStatus.INTERNAL_SERVER_ERROR).body("Printing failed: " + e.getMessage());
-    }
-    return ResponseEntity.ok("Print job started");
   }
 }
