@@ -249,30 +249,6 @@
   </div>
 </div>
 <script>
-   // const line = [[${line}]]; // Замените на динамическое значение из модели
-   // Получаем контекст канваса
-   /*   const canvas = document.getElementById('lineCanvas');
-      const context = canvas.getContext('2d');
-      // Установка реальных размеров canvas (с учетом размера элемента)
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-      // Пример рисования
-      context.strokeStyle = 'black';
-      context.lineWidth = 2;
-      context.beginPath();
-      context.moveTo(0, canvas.height / 10);
-      context.lineTo(canvas.width * line, (canvas.height - canvas.height / 10) * line);
-      context.stroke();
-
-      // Настройка шрифта для текста
-      context.fillStyle = 'black'; // Цвет текста
-      context.font = '20px Arial'; // Шрифт и размер текста
-      context.textAlign = 'center'; // Выравнивание текста
-      context.textBaseline = 'middle'; // Вертикальное выравнивание
-      // Добавление текста на canvas
-      const text = "Ваш текст здесь"; // Замените на ваш текст
-      context.fillText(text, canvas.width / 2, canvas.height / 2); // Позиция текста в центре canvas
-  */
    function drawGraph_1(canvasId, perfData, headData_1, headData_2, title) {
        if (perfData.length === 0 || headData_1.length === 0 || headData_2.length === 0) {
            console.error("Один из массивов пустой");
@@ -290,24 +266,18 @@
        // Рисуем оси
        ctx.beginPath();
        ctx.strokeStyle = "blue";
-       ctx.moveTo(0, 0);
-       ctx.lineTo(10, canvas.height - 10);            // Ось Y
-       ctx.lineTo(canvas.width, canvas.height - 10); // Ось X
+       ctx.moveTo(5, 0);
+       ctx.lineTo(5, canvas.height);            // Ось Y
+       ctx.lineTo(5, canvas.height-5);            // Ось Y
+       ctx.lineTo(canvas.width, canvas.height - 5); // Ось X
        ctx.stroke();
-
-       // Подписи осей
-       ctx.font = "12px Times New Roman";
-       ctx.textAlign = "center";
-       ctx.fillText(title, canvas.width / 2, 15);
-       ctx.fillText("Q (м³/ч)", canvas.width - 20, canvas.height - 5);
-       ctx.fillText("Н (м)", 5, 15);
 
        // Рисуем график для headData_1
        ctx.beginPath();
-       ctx.moveTo(10, canvas.height - headData_1[0] * yScale); // Начальная точка
+       ctx.moveTo(5, canvas.height-5 - headData_1[0] * yScale); // Начальная точка
        for (let i = 0; i < perfData.length; i++) {
-           const x = 10 + perfData[i] * xScale; // Координата X
-           const y = canvas.height - headData_1[i] * yScale; // Координата Y
+           const x = 5 + perfData[i] * xScale; // Координата X
+           const y = canvas.height-5 - headData_1[i] * yScale; // Координата Y
            ctx.lineTo(x, y); // Соединяем точки
        }
        ctx.strokeStyle = "blue"; // Цвет линии графика
@@ -315,14 +285,23 @@
 
        // Рисуем график для headData_2
        ctx.beginPath();
-       ctx.moveTo(10, canvas.height - headData_2[0] * yScale); // Начальная точка
+       ctx.moveTo(5, canvas.height-5 - headData_2[0] * yScale); // Начальная точка
        for (let i = 0; i < perfData.length; i++) {
-           const x = 10 + perfData[i] * xScale; // Координата X
-           const y = canvas.height - headData_2[i] * yScale; // Координата Y
+           const x = 5 + perfData[i] * xScale; // Координата X
+           const y = canvas.height-5 - headData_2[i] * yScale; // Координата Y
            ctx.lineTo(x, y); // Соединяем точки
        }
        ctx.strokeStyle = "blue"; // Цвет линии графика
        ctx.stroke(); // Отображаем график
+
+       // Подписи осей
+       ctx.font = "16px Arial";
+       ctx.textAlign = "center";
+       // ctx.textBaseline = 'middle'; // Вертикальное выравнивание
+       ctx.fillText(title, canvas.width / 2, 15);
+       ctx.fillText("Q (м³/ч)", canvas.width - 30, canvas.height - 10);
+       ctx.textAlign = "left";
+       ctx.fillText("Н (м)", 10, 15);
    }
    function drawGraph_2(canvasId, length, headData, title) {
        const canvas = document.getElementById(canvasId);
@@ -331,39 +310,49 @@
        canvas.height = canvas.clientHeight;
        // Масштабирование
        const xScale = canvas.width / length;
-       const yScale = canvas.height / headData[0];
+       const yScale = (canvas.height-15) / headData[0];
+
        // Рисуем оси
        ctx.beginPath();
-       ctx.moveTo(10, 0);
-       ctx.lineTo(10, canvas.height - 10);            // Ось Y
-       ctx.lineTo(canvas.width, canvas.height - 10); // Ось X
-
-       ctx.strokeStyle = "blue";                    // Цвет линии графика
+       ctx.strokeStyle = "blue";
+       ctx.moveTo(5, 0);
+       ctx.lineTo(5, canvas.height);            // Ось Y
+       ctx.lineTo(5, canvas.height-5);            // Ось Y
+       ctx.lineTo(canvas.width, canvas.height - 5); // Ось X
        ctx.stroke();
-
-       // Подписи осей
-       ctx.font = "12px Time New Roman";
-       ctx.fillText(title, canvas.width / 2, 5);
-       ctx.fillText("L(км)", canvas.width - 20, canvas.height - 5);
-       ctx.fillText("Н(м)", 5, 5);
 
        // Рисуем график
        ctx.beginPath();
-       ctx.moveTo(10, canvas.height - 10 - headData[0] * yScale); // Начальная точка
-       ctx.lineTo(length, canvas.height - 10 - headData[1] * yScale); // Начальная точка
+       ctx.moveTo(5, canvas.height + 5 - headData[0] * yScale); // Начальная точка
+       ctx.lineTo(length*xScale, canvas.height - 5 - headData[1] * yScale); // Начальная точка
 
        ctx.strokeStyle = "blue"; // Цвет линии графика
        ctx.stroke(); // Отображаем график
+
+       ctx.font = "16px Arial";
+       ctx.textAlign = "center";
+       ctx.fillText(title, canvas.width / 2, 15);
+       ctx.fillText("L (км)", canvas.width - 25, canvas.height - 10);
+       ctx.textAlign = "left";
+       ctx.fillText("Н (м)", 10, 15);
    }
    // Данные для первого графика
    const perf = [[${perf}]];
    const head_1 = [[${head_1}]];
    const head_2 = [[${head_2}]];
+   /* Нажимаем в браузере F12 переходим в console и можем смотреть
+      значения логов
+      console.log(perf);
+      console.log(head_1);
+      console.log(head_2);
+   */
    drawGraph_1('graph1', perf, head_1, head_2, "Q-H Характеристика");
- /*  // Данные для второго графика
+   // Данные для второго графика
    const line_length = [[${line_length}]];
    const headData = [[${headData}]];
-   drawGraph_2('graph2', line_length, headData, "Линия гидравлического уклона");*/
+   console.log(line_length);
+   console.log(headData);
+   drawGraph_2('graph2', line_length, headData, "Линия гидравлического уклона");
 </script>
 </body>
 </html>

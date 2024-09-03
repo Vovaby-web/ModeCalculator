@@ -1,5 +1,7 @@
 package pipeline.models;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 @Component
 public class ResultComponent {
   private Double pres_out_head;      // Давление на головной станции
@@ -17,26 +19,26 @@ public class ResultComponent {
   public final Integer[] limit_perf = {1250, 2500, 3600};
   public final Integer[] pump_a = {331, 282, 304};
   public final Double[] pump_b = {0.451, 0.792, 0.579};
-  private Integer[] chart_pomp;      // График напора насоса
-  private Integer[] chart_net;       // График напора сети
-  private Integer[] chart_perf;      // График производительности сети
-  public Integer[] getChart_perf() {
-    return chart_perf;
-  }
-  public void setChart_perf(Integer[] chart_perf) {
-    this.chart_perf = chart_perf;
-  }
-  public Integer[] getChart_pomp() {
+  private List<Integer> chart_pomp;      // График напора насоса
+  private List<Integer> chart_net;       // График напора сети
+  private List<Integer> chart_perf;      // График производительности сети
+  public List<Integer> getChart_pomp() {
     return chart_pomp;
   }
-  public void setChart_pomp(Integer[] chart_pomp) {
+  public void setChart_pomp(List<Integer> chart_pomp) {
     this.chart_pomp = chart_pomp;
   }
-  public Integer[] getChart_net() {
+  public List<Integer> getChart_net() {
     return chart_net;
   }
-  public void setChart_net(Integer[] chart_net) {
+  public void setChart_net(List<Integer> chart_net) {
     this.chart_net = chart_net;
+  }
+  public List<Integer> getChart_perf() {
+    return chart_perf;
+  }
+  public void setChart_perf(List<Integer> chart_perf) {
+    this.chart_perf = chart_perf;
   }
   public Integer getPerformance() {
     return performance;

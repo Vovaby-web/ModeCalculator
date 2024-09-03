@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -73,20 +74,14 @@ public class HomeController {
       model.addAttribute("pomp_a", res.getPomp_a());
       model.addAttribute("pomp_b", res.getPomp_b());
       // Передаем данные для рисования графиков
-      List<Integer> in = Arrays.asList(0, 10, 20, 30, 40, 50, 60);
-      List<Integer> out_1 = Arrays.asList(0, 5, 10, 15, 18, 20, 22);
-      List<Integer> out_2 = Arrays.asList(22, 20, 18, 15, 10, 5, 0);
-      model.addAttribute("perf", in);
-      model.addAttribute("head_1", out_1);
-      model.addAttribute("head_2", out_2);
-      //model.addAttribute("perf", res.getChart_perf());
-      //model.addAttribute("head_1", res.getChart_pomp());
-      // model.addAttribute("head_2", res.getChart_net());
-      // model.addAttribute("line_length", modesComponent.getLineLength());
-      model.addAttribute("headData", new int[]{res.getHead_main() + res.getHead_booster() +
+      model.addAttribute("perf", res.getChart_perf());
+      model.addAttribute("head_1", res.getChart_pomp());
+      model.addAttribute("head_2", res.getChart_net());
+      model.addAttribute("line_length", modesComponent.getLineLength());
+      List<Integer> headData=Arrays.asList(res.getHead_main() + res.getHead_booster() +
           (int) Math.round(modesComponent.getPointStart()), res.getHead_end() +
-          (int) Math.round(modesComponent.getPointEnd())});
-      model.addAttribute("lineData", modesComponent.getLineLength());
+          (int) Math.round(modesComponent.getPointEnd()));
+      model.addAttribute("headData", headData);
     } else {
       model.addAttribute("message", modesService.outError(modesComponent));
     }

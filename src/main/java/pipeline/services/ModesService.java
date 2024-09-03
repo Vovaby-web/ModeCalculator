@@ -6,6 +6,7 @@ import pipeline.models.SelectSaveParameter;
 import pipeline.models.ResultComponent;
 import pipeline.repository.DataBaseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 @Service
 @RequestScope
@@ -50,27 +51,35 @@ public class ModesService {
     // Площадь сечения трубопровода
     resultComponent.setSquare(Math.PI * Math.pow(modesComponent.getDiameter() / 1000.0, 2) / 4.0);
     calc(modesComponent, resultComponent.limit_perf[i]);
-    resultComponent.setPres_out_head(modesComponent.getDensity()/100000.0 * 9.8 *
-        (resultComponent.getHead_main() + resultComponent.getHead_booster() +
-            modesComponent.getPointStart()));
-    resultComponent.setPres_in_final(modesComponent.getDensity()/100000.0 * 9.8 *
-        (resultComponent.getHead_end() + modesComponent.getPointEnd()));
+    resultComponent.setPres_out_head(modesComponent.getDensity() / 100000.0 * 9.8 *
+      (resultComponent.getHead_main() + resultComponent.getHead_booster() +
+        modesComponent.getPointStart()));
+    resultComponent.setPres_in_final(modesComponent.getDensity() / 100000.0 * 9.8 *
+      (resultComponent.getHead_end() + modesComponent.getPointEnd()));
     return resultComponent;
   }
   private void calc(ModesComponent modesComponent, int a) {
-    Integer[] chart_pomp = new Integer[a];
-    Integer[] chart_net = new Integer[a];
-    Integer[] chart_perf = new Integer[a];
+    List<Integer> chart_pomp = new ArrayList<>();
+    List<Integer> chart_net = new ArrayList<>();
+    List<Integer> chart_perf = new ArrayList<>();
+    int pomp = resultComponent.getPomp_a();
+    int net;
     int k = 50;
-    for (int q = 0; q < a; q += k) {
-      chart_pomp[q] = (int) (resultComponent.getPomp_a() - resultComponent.getPomp_b() *
-          Math.pow(10, -4) * Math.pow(q, 2));
-      chart_net[q] = (int) calcHeadmain(modesComponent, q);
-      chart_perf[q] = q;
-      if (chart_pomp[q] >= chart_net[q] - k/5 && chart_pomp[q] <= chart_net[q] + k/5) {
-        resultComponent.setHead_main(chart_pomp[q]);
+    int q = k;
+    while (pomp > 0) {
+      pomp = (int) (resultComponent.getPomp_a() - resultComponent.getPomp_b() *
+        Math.pow(10, -4) * Math.pow(q, 2));
+      chart_pomp.add(pomp);
+      net = (int) calcHeadmain(modesComponent, q);
+      chart_net.add(net);
+      chart_perf.add(q);
+      if (pomp >= net - k / 5 && pomp < net + k / 5) {
+        resultComponent.setHead_main(pomp);
         resultComponent.setPerformance(q);
       }
+      if (net>pomp+100)
+        break;
+      q += k;
     }
     resultComponent.setChart_pomp(chart_pomp);
     resultComponent.setChart_net(chart_net);
@@ -84,10 +93,10 @@ public class ModesService {
     // Re = v(скорость) * d(диаметр в мм, поэтому делим на 1000)) / m(вязкость в сСт, поэтому умножаем на 10^-6)
     double reyn = speed * d / (modesComponent.getViscosity() * Math.pow(10, -6));
     double lambda = calcLambda(reyn, d);
-    double head_net = 1.02 * lambda * (modesComponent.getLineLength()*1000.0) *
-        Math.pow(speed, 2) / (d * 2.0 * 9.8) +
-        resultComponent.getHead_end() - resultComponent.getHead_booster() +
-        (modesComponent.getPointEnd() - modesComponent.getPointStart());
+    double head_net = 1.02 * lambda * (modesComponent.getLineLength() * 1000.0) *
+      Math.pow(speed, 2) / (d * 2.0 * 9.8) +
+      resultComponent.getHead_end() - resultComponent.getHead_booster() +
+      (modesComponent.getPointEnd() - modesComponent.getPointStart());
     return head_net;
   }
   public Double calcLambda(double reyn, double d) {
