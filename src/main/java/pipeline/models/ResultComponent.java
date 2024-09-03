@@ -2,24 +2,53 @@ package pipeline.models;
 import org.springframework.stereotype.Component;
 @Component
 public class ResultComponent {
-  private Double pres_out_head;   // Давление на головной станции
-  private Double pres_in_final;   // Давление в конечном пункте
-  private Integer pomp_a;         // a - коэффициент насоса
-  private Double pomp_b;          // b - коэффициент насоса
-  private Integer pomp_head;      // Напор на головной станции
-  private Integer head_end;       // Напор в конечном пункте
-  private Integer head_loss;      // Потери напора на всем участке
-  private Double lambda;          // Коэффициент гидравлического сопротивления
-  private Double reynolds_number; // Число Рейнольдса
-  private Double square;          // Площадь сечения трубопровода
-  private Double pumping;         // Производительность перекачки
-  private final Integer[] pump_char_a={331,282,304};
-  private final Double[] pump_char_b={0.451,0.792,0.579};
-  public Integer[] getPump_char_a() {
-    return pump_char_a;
+  private Double pres_out_head;      // Давление на головной станции
+  private Double pres_in_final;      // Давление в конечном пункте
+  private Integer pomp_a;            // a - коэффициент насоса
+  private Double pomp_b;             // b - коэффициент насоса
+  private Integer head_main;         // Напор на головной станции
+  private Integer head_end;          // Напор в конечном пункте
+  private Integer head_booster;      // Напор подпорного агрегата
+  private Double lambda;             // Коэффициент гидравлического сопротивления
+  private Double reynolds_number;    // Число Рейнольдса
+  private Double square;             // Площадь сечения трубопровода
+  private Double pumping;            // Производительность перекачки
+  private Integer performance;       // Производительность
+  public final Integer[] limit_perf = {1250, 2500, 3600};
+  public final Integer[] pump_a = {331, 282, 304};
+  public final Double[] pump_b = {0.451, 0.792, 0.579};
+  private Integer[] chart_pomp;      // График напора насоса
+  private Integer[] chart_net;       // График напора сети
+  private Integer[] chart_perf;      // График производительности сети
+  public Integer[] getChart_perf() {
+    return chart_perf;
   }
-  public Double[] getPump_char_b() {
-    return pump_char_b;
+  public void setChart_perf(Integer[] chart_perf) {
+    this.chart_perf = chart_perf;
+  }
+  public Integer[] getChart_pomp() {
+    return chart_pomp;
+  }
+  public void setChart_pomp(Integer[] chart_pomp) {
+    this.chart_pomp = chart_pomp;
+  }
+  public Integer[] getChart_net() {
+    return chart_net;
+  }
+  public void setChart_net(Integer[] chart_net) {
+    this.chart_net = chart_net;
+  }
+  public Integer getPerformance() {
+    return performance;
+  }
+  public void setPerformance(Integer performance) {
+    this.performance = performance;
+  }
+  public Integer[] getPump_a() {
+    return pump_a;
+  }
+  public Double[] getPump_b() {
+    return pump_b;
   }
   public Double getPres_out_head() {
     return pres_out_head;
@@ -45,11 +74,11 @@ public class ResultComponent {
   public void setPomp_b(Double pomp_b) {
     this.pomp_b = pomp_b;
   }
-  public Integer getPomp_head() {
-    return pomp_head;
+  public Integer getHead_main() {
+    return head_main;
   }
-  public void setPomp_head(Integer pomp_head) {
-    this.pomp_head = pomp_head;
+  public void setHead_main(Integer head_main) {
+    this.head_main = head_main;
   }
   public Integer getHead_end() {
     return head_end;
@@ -57,11 +86,11 @@ public class ResultComponent {
   public void setHead_end(Integer head_end) {
     this.head_end = head_end;
   }
-  public Integer getHead_loss() {
-    return head_loss;
+  public Integer getHead_booster() {
+    return head_booster;
   }
-  public void setHead_loss(Integer head_loss) {
-    this.head_loss = head_loss;
+  public void setHead_booster(Integer head_booster) {
+    this.head_booster = head_booster;
   }
   public Double getLambda() {
     return lambda;

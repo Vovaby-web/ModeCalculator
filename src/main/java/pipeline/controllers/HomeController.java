@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Arrays;
+import java.util.List;
 
 @Controller
 public class HomeController {
@@ -43,7 +46,7 @@ public class HomeController {
     if (username == null) {
       return "redirect:/";
     }
-    if (baseComponent.getModes()==null) {
+    if (baseComponent.getModes() == null) {
       baseComponent.setModes(modesService.loadName(username));
     }
     model.addAttribute("username", username);
@@ -62,15 +65,32 @@ public class HomeController {
       this.baseComponent.setModes(modesService.loadName(username));
       // Отображаем элементы, которые требуется нарисовать
       model.addAttribute("showPressure", true);
-      model.addAttribute("line", 1);
-      model.addAttribute("presout", res.getPres_out_head());
-      model.addAttribute("presin", res.getPres_in_final());
+
+      DecimalFormat df = new DecimalFormat("#.00"); // Формат для двух знаков после запятой
+      model.addAttribute("presout", df.format(res.getPres_out_head()));
+      model.addAttribute("presin", df.format(res.getPres_in_final()));
+
       model.addAttribute("pomp_a", res.getPomp_a());
       model.addAttribute("pomp_b", res.getPomp_b());
+      // Передаем данные для рисования графиков
+      List<Integer> in = Arrays.asList(0, 10, 20, 30, 40, 50, 60);
+      List<Integer> out_1 = Arrays.asList(0, 5, 10, 15, 18, 20, 22);
+      List<Integer> out_2 = Arrays.asList(22, 20, 18, 15, 10, 5, 0);
+      model.addAttribute("perf", in);
+      model.addAttribute("head_1", out_1);
+      model.addAttribute("head_2", out_2);
+      //model.addAttribute("perf", res.getChart_perf());
+      //model.addAttribute("head_1", res.getChart_pomp());
+      // model.addAttribute("head_2", res.getChart_net());
+      // model.addAttribute("line_length", modesComponent.getLineLength());
+      model.addAttribute("headData", new int[]{res.getHead_main() + res.getHead_booster() +
+          (int) Math.round(modesComponent.getPointStart()), res.getHead_end() +
+          (int) Math.round(modesComponent.getPointEnd())});
+      model.addAttribute("lineData", modesComponent.getLineLength());
     } else {
-      model.addAttribute("message", this.modesService.outError(modesComponent));
+      model.addAttribute("message", modesService.outError(modesComponent));
     }
-    model.addAttribute("form", this.modesComponent);
+    model.addAttribute("form", modesComponent);
     model.addAttribute("headform", this.baseComponent);
     return "home";
   }
@@ -85,7 +105,7 @@ public class HomeController {
   @PostMapping("/load")
   public String loadData(@ModelAttribute BaseComponent baseComponent, Model model) {
     Integer selectedModeValue = baseComponent.getSelectMode();
-    if (selectedModeValue!=null) {
+    if (selectedModeValue != null) {
       modesComponent.saveMode(
           modesService.loadParameter(selectedModeValue, username));
     }
@@ -110,8 +130,8 @@ public class HomeController {
     HttpHeaders headers = new HttpHeaders();
     headers.add("Content-Disposition", "attachment; filename=example.xlsx");
     return ResponseEntity.ok()
-      .headers(headers)
-      .contentType(MediaType.APPLICATION_OCTET_STREAM)
-      .body(bytes);
+        .headers(headers)
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .body(bytes);
   }
 }
