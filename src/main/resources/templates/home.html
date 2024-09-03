@@ -4,133 +4,7 @@
   <meta charset="UTF-8">
   <meta name="author" content="Bychkovski Vladimir">
   <title>Сalculations</title>
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-      }
-      header {
-          background-color: rgb(0, 36, 53);
-          color: rgb(255, 128, 128);
-          display: flex; /* Используем Flexbox для размещения элементов */
-          justify-content: space-between; /* Размещаем элементы по краям */
-          align-items: center; /* Центрируем элементы по вертикали */
-          padding: 5px; /* Отступы вокруг контейнера */
-          margin: 0; /* Убираем отступы у блока */
-          border-radius: 8px; /* Закругленные углы */
-          font-size: 14px;
-      }
-      h1, h2 {
-          margin: 0; /* Убираем отступы по умолчанию */
-      }
-      h2 a {
-          color: white; /* Цвет ссылки соответствует цвету текста */
-          text-decoration: none; /* Убираем подчеркивание у ссылки */
-      }
-      h2 a:hover {
-          text-decoration: underline; /* Подчеркиваем ссылку при наведении */
-      }
-      .container {
-          display: flex;
-          height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
-      }
-      h3 {
-          font-size: 14px;
-          margin-left: 2pt;
-      }
-      .left-column {
-          width: 20%; /* Ширина левого столбца */
-          background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
-          color: rgb(155, 222, 255);
-          border: 1px solid white; /* Белая рамка */
-          border-radius: 8px; /* Закругленные углы */
-          padding: 5px; /* Отступы для формы */
-      }
-      .blockin {
-          background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
-          padding: 5px; /* Отступы для формы */
-          border-radius: 8px; /* Закругленные углы */
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
-          font-size: 13px;
-          border: 1px solid white; /* Белая рамка */
-          color: white;
-          position: relative;
-      }
-      .blockin-calc {
-          background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
-          padding: 5px; /* Отступы для формы */
-          border-radius: 8px; /* Закругленные углы */
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
-          font-size: 13px;
-          border: 1px solid white; /* Белая рамка */
-          color: white;
-          position: relative;
-          display: none; /* Скрываем элемент */
-          margin-top: 2pt;
-      }
-      .scrollable-box {
-          background-color: rgb(0, 16, 32); /* Цвет фона левого столбца */
-          width: 90%; /* Ширина блока */
-          height: 150px; /* Высота блока */
-          overflow-y: auto; /* Вертикальная прокрутка */
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
-          border: 1px solid white; /* Белая рамка */
-          padding: 10px; /* Отступы внутри блока */
-          font-size: 14px; /* Размер шрифта */
-          color: white;
-      }
-      .right-column {
-          width: 80%; /* Ширина правого столбца */
-          padding: 10px; /* Отступы для формы */
-          background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
-          color: rgb(155, 222, 255);
-          border: 1px solid white; /* Белая рамка */
-          border-radius: 8px; /* Закругленные углы */
-      }
-      .right {
-          width: 98%; /* Устанавливаем ширину 100% */
-          height: 93%; /* Устанавливаем высоту 90% */
-          color: rgb(155, 222, 255);
-          position: relative;
-          background: white;
-          background-image: url('images/Scheme.jpg'); /* Путь к изображению */
-          background-size: contain; /* Изображение будет полностью показано */
-          /* background-size: cover; /* Растянуть изображение на весь экран */
-          background-position: center; /* Центрировать изображение */
-          background-repeat: no-repeat; /* Не повторять изображение */
-      }
-      canvas {
-          border: 1px solid #000; /* Черная рамка */
-          display: none; /* Скрываем элемент */
-      }
-      .input-short {
-          width: 100px; /* Установите желаемую ширину */
-          margin-left: 5px; /* Установите нужное значение отступа */
-      }
-      .label-spacing {
-          margin-left: 10px; /* Установите нужное значение отступа */
-      }
-      .message-block {
-          width: 90%; /* Установите желаемую ширину */
-          position: relative;
-      }
-      .pressure {
-          width: 80%; /* Устанавливаем ширину 100% */
-          height: 4%; /* Устанавливаем высоту 90% */
-          border: 1px solid #000;
-          position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
-          top: 65%; /* Смещение вниз */
-          left: 1%; /* Смещение вправо */
-          color: black;
-          border-radius: 8px; /* Закругленные углы */
-          font-size: 10px;
-          display: none; /* Скрываем элемент */
-      }
-      .show {
-          display: block; /* Указываем что элемент будет отображаться */
-      }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
@@ -163,11 +37,11 @@
         <input type="number" name="lineLength" class="input-short"
                th:value="${form.getLineLength()}" min="1" max="10000" step="1"/><br/>
         <br><span class="label-spacing">Геодезическая отметка</span></br><span
-        class="label-spacing">в начале участка (м):</span>
+         class="label-spacing">в начале участка (м):</span>
         <input type="number" name="pointStart" class="input-short"
                th:value="${form.getPointStart()}" min="1" max="1000" step="0.1"/><br/>
         <br><span class="label-spacing">Геодезическая отметка</span></br><span
-        class="label-spacing">в конце участка (м):</span>
+         class="label-spacing">в конце участка (м):</span>
         <input type="number" name="pointEnd" class="input-short" th:value="${form.getPointEnd()}"
                min="1" max="1000" step="0.1"/><br/>
         <br><span class="label-spacing">Диаметр (мм):</span>
@@ -235,124 +109,42 @@
   <div class="right-column">
     <h2>Расчет режима работы трубопровода</h2>
     <div class="right">
-      <div class="pressure" th:classappend="${showPressure} ? 'show'">
-        <h2 style="margin-top: 1px; margin-left: 5px;">Давление (кгс/см<sup>2</sup>) |
-          <span th:text="'Pвых=' + ${presout}"></span>
-          <span style="position: absolute; right: 5px;" th:text="'Pвх=' + ${presin}"></span>
-        </h2>
-      </div>
-      <div style="display: flex; gap: 5px; margin-top: 1pt;margin-left: 5pt">
+      <div style="display: flex; gap: 5px; /* расстояние между элементами */
+      margin-top: 1pt;margin-left: 5pt">
         <canvas style="width: 28%;" id="graph1" th:classappend="${showPressure} ? 'show'"></canvas>
-        <canvas style="width: 63%;" id="graph2" th:classappend="${showPressure} ? 'show'"></canvas>
+        <canvas style="width: 62%;" id="graph2" th:classappend="${showPressure} ? 'show'"></canvas>
+      </div>
+      <div class="pressure" th:classappend="${showPressure} ? 'show'">
+        <h2 style="margin-top:3px; margin-left: 5px;">Давление (кгс/см<sup>2</sup>) |
+          <span th:text="'Pвых=' + ${presout}"></span>
+          <span style="position: absolute; right: 5px;margin-top:3px;"
+                th:text="'Pвх=' + ${presin}"></span>
+        </h2>
       </div>
     </div>
   </div>
 </div>
-<script>
-   function drawGraph_1(canvasId, perfData, headData_1, headData_2, title) {
-       if (perfData.length === 0 || headData_1.length === 0 || headData_2.length === 0) {
-           console.error("Один из массивов пустой");
-           return;
-       }
-       const canvas = document.getElementById(canvasId);
-       const ctx = canvas.getContext('2d');
-       canvas.width = canvas.clientWidth;
-       canvas.height = canvas.clientHeight;
-
-       // Масштабирование
-       const xScale = canvas.width / (Math.max(...perfData));
-       const yScale = canvas.height / (Math.max(...headData_1, ...headData_2));
-
-       // Рисуем оси
-       ctx.beginPath();
-       ctx.strokeStyle = "blue";
-       ctx.moveTo(5, 0);
-       ctx.lineTo(5, canvas.height);            // Ось Y
-       ctx.lineTo(5, canvas.height-5);            // Ось Y
-       ctx.lineTo(canvas.width, canvas.height - 5); // Ось X
-       ctx.stroke();
-
-       // Рисуем график для headData_1
-       ctx.beginPath();
-       ctx.moveTo(5, canvas.height-5 - headData_1[0] * yScale); // Начальная точка
-       for (let i = 0; i < perfData.length; i++) {
-           const x = 5 + perfData[i] * xScale; // Координата X
-           const y = canvas.height-5 - headData_1[i] * yScale; // Координата Y
-           ctx.lineTo(x, y); // Соединяем точки
-       }
-       ctx.strokeStyle = "blue"; // Цвет линии графика
-       ctx.stroke(); // Отображаем график
-
-       // Рисуем график для headData_2
-       ctx.beginPath();
-       ctx.moveTo(5, canvas.height-5 - headData_2[0] * yScale); // Начальная точка
-       for (let i = 0; i < perfData.length; i++) {
-           const x = 5 + perfData[i] * xScale; // Координата X
-           const y = canvas.height-5 - headData_2[i] * yScale; // Координата Y
-           ctx.lineTo(x, y); // Соединяем точки
-       }
-       ctx.strokeStyle = "blue"; // Цвет линии графика
-       ctx.stroke(); // Отображаем график
-
-       // Подписи осей
-       ctx.font = "16px Arial";
-       ctx.textAlign = "center";
-       // ctx.textBaseline = 'middle'; // Вертикальное выравнивание
-       ctx.fillText(title, canvas.width / 2, 15);
-       ctx.fillText("Q (м³/ч)", canvas.width - 30, canvas.height - 10);
-       ctx.textAlign = "left";
-       ctx.fillText("Н (м)", 10, 15);
-   }
-   function drawGraph_2(canvasId, length, headData, title) {
-       const canvas = document.getElementById(canvasId);
-       const ctx = canvas.getContext('2d');
-       canvas.width = canvas.clientWidth;
-       canvas.height = canvas.clientHeight;
-       // Масштабирование
-       const xScale = canvas.width / length;
-       const yScale = (canvas.height-15) / headData[0];
-
-       // Рисуем оси
-       ctx.beginPath();
-       ctx.strokeStyle = "blue";
-       ctx.moveTo(5, 0);
-       ctx.lineTo(5, canvas.height);            // Ось Y
-       ctx.lineTo(5, canvas.height-5);            // Ось Y
-       ctx.lineTo(canvas.width, canvas.height - 5); // Ось X
-       ctx.stroke();
-
-       // Рисуем график
-       ctx.beginPath();
-       ctx.moveTo(5, canvas.height + 5 - headData[0] * yScale); // Начальная точка
-       ctx.lineTo(length*xScale, canvas.height - 5 - headData[1] * yScale); // Начальная точка
-
-       ctx.strokeStyle = "blue"; // Цвет линии графика
-       ctx.stroke(); // Отображаем график
-
-       ctx.font = "16px Arial";
-       ctx.textAlign = "center";
-       ctx.fillText(title, canvas.width / 2, 15);
-       ctx.fillText("L (км)", canvas.width - 25, canvas.height - 10);
-       ctx.textAlign = "left";
-       ctx.fillText("Н (м)", 10, 15);
-   }
+<script src="script.js"></script>
+ <script>
    // Данные для первого графика
    const perf = [[${perf}]];
    const head_1 = [[${head_1}]];
    const head_2 = [[${head_2}]];
-   /* Нажимаем в браузере F12 переходим в console и можем смотреть
-      значения логов
-      console.log(perf);
-      console.log(head_1);
-      console.log(head_2);
-   */
-   drawGraph_1('graph1', perf, head_1, head_2, "Q-H Характеристика");
+   // Нажимаем в браузере F12 переходим в console и можем смотреть значения логов
+   // console.log(perf);
+   // console.log(head_1);
+   // console.log(head_2);
+
+   if ((perf && perf.length > 0)&&(head_1 && head_1.length > 0)&&
+       (head_2 && head_2.length > 0)) {
+       drawGraph_1('graph1', perf, head_1, head_2, "Q-H Характеристика");
+   }
    // Данные для второго графика
    const line_length = [[${line_length}]];
    const headData = [[${headData}]];
-   console.log(line_length);
-   console.log(headData);
-   drawGraph_2('graph2', line_length, headData, "Линия гидравлического уклона");
-</script>
+   if ((line_length)&&(headData && headData.length > 0)) {
+       drawGraph_2('graph2', line_length, headData, "Линия гидравлического уклона");
+   }
+ </script>
 </body>
 </html>

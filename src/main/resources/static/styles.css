@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: rgb(0, 36, 53);
+    color: rgb(255, 128, 128);
+    display: flex; /* Используем Flexbox для размещения элементов */
+    justify-content: space-between; /* Размещаем элементы по краям */
+    align-items: center; /* Центрируем элементы по вертикали */
+    padding: 5px; /* Отступы вокруг контейнера */
+    margin: 0; /* Убираем отступы у блока */
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 14px;
+}
+h1, h2 {
+    margin: 0; /* Убираем отступы по умолчанию */
+}
+h2 a {
+    color: white; /* Цвет ссылки соответствует цвету текста */
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+}
+h2 a:hover {
+    text-decoration: underline; /* Подчеркиваем ссылку при наведении */
+}
+.container {
+    display: flex;
+    height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
+}
+h3 {
+    font-size: 14px;
+    margin-left: 2pt;
+}
+.left-column {
+    width: 20%; /* Ширина левого столбца */
+    background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
+    color: rgb(155, 222, 255);
+    border: 1px solid white; /* Белая рамка */
+    border-radius: 8px; /* Закругленные углы */
+    padding: 5px; /* Отступы для формы */
+}
+.blockin {
+    background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
+    padding: 5px; /* Отступы для формы */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    font-size: 13px;
+    border: 1px solid white; /* Белая рамка */
+    color: white;
+    position: relative;
+}
+.blockin-calc {
+    background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
+    padding: 5px; /* Отступы для формы */
+    border-radius: 8px; /* Закругленные углы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    font-size: 13px;
+    border: 1px solid white; /* Белая рамка */
+    color: white;
+    position: relative;
+    display: none; /* Скрываем элемент */
+    margin-top: 2pt;
+}
+.scrollable-box {
+    background-color: rgb(0, 16, 32); /* Цвет фона левого столбца */
+    width: 90%; /* Ширина блока */
+    height: 150px; /* Высота блока */
+    overflow-y: auto; /* Вертикальная прокрутка */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    border: 1px solid white; /* Белая рамка */
+    padding: 10px; /* Отступы внутри блока */
+    font-size: 14px; /* Размер шрифта */
+    color: white;
+}
+.right-column {
+    width: 80%; /* Ширина правого столбца */
+    padding: 10px; /* Отступы для формы */
+    background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
+    color: rgb(155, 222, 255);
+    border: 1px solid white; /* Белая рамка */
+    border-radius: 8px; /* Закругленные углы */
+}
+.right {
+    width: 98%; /* Устанавливаем ширину 100% */
+    height: 93%; /* Устанавливаем высоту 90% */
+    color: rgb(155, 222, 255);
+    position: relative;
+    background: white;
+    background-image: url('images/Scheme.jpg'); /* Путь к изображению */
+    background-size: contain; /* Изображение будет полностью показано */
+    /* background-size: cover; /* Растянуть изображение на весь экран */
+    background-position: center; /* Центрировать изображение */
+    background-repeat: no-repeat; /* Не повторять изображение */
+}
+.input-short {
+    width: 100px; /* Установите желаемую ширину */
+    margin-left: 5px; /* Установите нужное значение отступа */
+}
+.label-spacing {
+    margin-left: 10px; /* Установите нужное значение отступа */
+}
+.message-block {
+    width: 90%; /* Установите желаемую ширину */
+    position: relative;
+}
+canvas {
+    margin-top: 5pt;
+    border: 1px solid #000; /* Черная рамка */
+    display: none; /* Скрываем элемент */
+    border-radius: 8px; /* Закругленные углы */
+}
+.pressure {
+    width: 90%; /* Устанавливаем ширину 100% */
+    height: 30px; /* Устанавливаем высоту 90% */
+    border: 1px solid #000;
+    position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
+    /*top: 65%; /* Смещение вниз */
+    /*left: 1%; /* Смещение вправо */
+    margin-top: 5pt;
+    margin-left: 5pt;
+    color: black;
+    border-radius: 8px; /* Закругленные углы */
+    font-size: 10px;
+    display: none; /* Скрываем элемент */
+}
+.show {
+    display: block; /* Указываем что элемент будет отображаться */
+}
