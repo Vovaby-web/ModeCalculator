@@ -37,11 +37,11 @@
         <input type="number" name="lineLength" class="input-short"
                th:value="${form.getLineLength()}" min="1" max="10000" step="1"/><br/>
         <br><span class="label-spacing">Геодезическая отметка</span></br><span
-         class="label-spacing">в начале участка (м):</span>
+        class="label-spacing">в начале участка (м):</span>
         <input type="number" name="pointStart" class="input-short"
                th:value="${form.getPointStart()}" min="1" max="1000" step="0.1"/><br/>
         <br><span class="label-spacing">Геодезическая отметка</span></br><span
-         class="label-spacing">в конце участка (м):</span>
+        class="label-spacing">в конце участка (м):</span>
         <input type="number" name="pointEnd" class="input-short" th:value="${form.getPointEnd()}"
                min="1" max="1000" step="0.1"/><br/>
         <br><span class="label-spacing">Диаметр (мм):</span>
@@ -75,22 +75,30 @@
     </div>
     <div class="blockin-calc" th:classappend="${showPressure} ? 'show'">
       <h2 style="padding: 2px;color: rgb(155, 222, 255);">Расчеты</h2>
-      <div class="scrollable-box">
+      <div class="scrollable-box" th:object="${result}">
         <p>Характеристика насоса:</p>
-        <p>a - b * Q<sup>2</sup> = <span th:text="${pomp_a}"></span> -
-          <span th:text="${pomp_b}"></span> * Q<sup>2</sup>
-        </p>
-        <p>Вязкость = 9 сСт</p>
-        <p>Vivamus lacinia odio vitae vestibulum.</p>
-        <p>Proin sed libero enim, sed faucibus turpis.</p>
-        <p>Suspendisse potenti. Cras egestas, mauris et finibus tincidunt, massa purus lacinia arcu,
-          nec volutpat ipsum odio ut mauris.</p>
-        <p>Ut pharetra vulputate nibh, ac auctor turpis aliquam nec.</p>
-        <p>Fusce suscipit nisi id ante volutpat, nec dignissim sem tincidunt.</p>
-        <p>Aenean vestibulum consequat metus quis bibendum.</p>
-        <p>Cras gravida mauris sed quam semper, nec ultrices quam bibendum.</p>
-        <p>Phasellus finibus, libero vitae efficitur convallis, dui quam ultricies urna, non aliquet
-          lacus erat at lorem.</p>
+        <p>a - b * Q<sup>2</sup> = <span th:text="${result.getPomp_a()}"></span> -
+          <span th:text="${result.getPomp_b()}"></span> * Q<sup>2</sup></p>
+        <p>Толщина внутренней стенки трубы: <br>8 (мм)</p>
+        <p>Площадь сечения трубопровода:
+          <br><span th:text="${result.getSquareStr()}"></span> (м<sup>2</sup>)</p>
+        <p>Напор подпорного агрегата:
+          <br><span th:text="${result.getHead_booster()}"></span> (м)</p>
+        <p>Напор магистрального агрегата:
+          <br><span th:text="${result.getHead_main()}"></span> (м)</p>
+        <p>Общий напор головной станции:
+          <br><span th:text="${result.getTotalHead()}"></span> (м)</p>
+        <p>Давление на головной станции:
+          <br><span th:text="${result.getPres_out_headStr()}"></span> (кгс/см<sup>2</sup>)</p>
+        <p>Общий напор в конечном пункте:
+          <br><span th:text="${result.getTotalEnd()}"></span> (м)</p>
+        <p>Давление в конечном пункте:
+          <br><span th:text="${result.getPres_in_finalStr()}"></span> (кгс/см<sup>2</sup>)</p>
+        <p>Производительность перекачки (Q):
+          <br><span th:text="${result.getPerformance()}"></span> (м<sup>3</sup>/ч)</p>
+        <p>Число Рейнольдса (Re):
+          <br><span th:text="${result.getReynolds_number()}"></span> (м<sup>3</sup>/ч)</p>
+        <p>Лямбда = <span th:text="${result.getLambda()}"></span></p>
       </div>
       <div style="display: flex; gap: 10px; margin-top: 5pt;">  <!-- Контейнер для форм -->
         <form action="/save" method="post" th:object="${saveForm}">
@@ -109,10 +117,12 @@
   <div class="right-column">
     <h2>Расчет режима работы трубопровода</h2>
     <div class="right">
-      <div style="display: flex; gap: 5px; /* расстояние между элементами */
-      margin-top: 1pt;margin-left: 5pt">
-        <canvas style="width: 28%;" id="graph1" th:classappend="${showPressure} ? 'show'"></canvas>
-        <canvas style="width: 62%;" id="graph2" th:classappend="${showPressure} ? 'show'"></canvas>
+      <div style="display: flex; gap: 5px;  /* расстояние между элементами */
+      height: 65%; margin-top: 1pt;margin-left: 5pt;">
+        <canvas style="width: 30%; background: rgb(222,226,228)"
+                id="graph1" th:classappend="${showPressure} ? 'show'"></canvas>
+        <canvas style="width: 67%; background: rgb(222,226,228)"
+                id="graph2" th:classappend="${showPressure} ? 'show'"></canvas>
       </div>
       <div class="pressure" th:classappend="${showPressure} ? 'show'">
         <h2 style="margin-top:3px; margin-left: 5px;">Давление (кгс/см<sup>2</sup>) |
@@ -127,23 +137,25 @@
 <script src="script.js"></script>
  <script>
    // Данные для первого графика
-   const perf = [[${perf}]];
+   const perfData = [[${perfData}]];
    const head_1 = [[${head_1}]];
    const head_2 = [[${head_2}]];
+   const perfCur = [[${perfCur}]];
+   const headCur = [[${headCur}]];
    // Нажимаем в браузере F12 переходим в console и можем смотреть значения логов
    // console.log(perf);
    // console.log(head_1);
    // console.log(head_2);
-
-   if ((perf && perf.length > 0)&&(head_1 && head_1.length > 0)&&
-       (head_2 && head_2.length > 0)) {
-       drawGraph_1('graph1', perf, head_1, head_2, "Q-H Характеристика");
+   if ((perfData && perfData.length > 0) && (head_1 && head_1.length > 0) &&
+       (head_2 && head_2.length > 0) && perfCur && headCur) {
+       drawGraph_1('graph1', perfData, head_1, head_2, perfCur, headCur, "Q-H Характеристика");
    }
    // Данные для второго графика
    const line_length = [[${line_length}]];
    const headData = [[${headData}]];
-   if ((line_length)&&(headData && headData.length > 0)) {
-       drawGraph_2('graph2', line_length, headData, "Линия гидравлического уклона");
+   const iforq = [[${iforq}]];
+   if (line_length&&iforq && (headData && headData.length > 0)) {
+       drawGraph_2('graph2', line_length, headData,iforq, "Линия гидравлического уклона");
    }
  </script>
 </body>

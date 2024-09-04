@@ -13,6 +13,8 @@ header {
     margin: 0; /* Убираем отступы у блока */
     border-radius: 8px; /* Закругленные углы */
     font-size: 14px;
+    min-width: 1400px; /* Минимальная ширина */
+    transition: width 0.5s; /* Плавный переход */
 }
 h1, h2 {
     margin: 0; /* Убираем отступы по умолчанию */
@@ -27,6 +29,7 @@ h2 a:hover {
 .container {
     display: flex;
     height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
+    width: 100%;
 }
 h3 {
     font-size: 14px;
@@ -39,6 +42,9 @@ h3 {
     border: 1px solid white; /* Белая рамка */
     border-radius: 8px; /* Закругленные углы */
     padding: 5px; /* Отступы для формы */
+    max-width: 350px; /* Максимальная ширина */
+    min-width: 300px; /* Минимальная ширина */
+    transition: width 0.5s; /* Плавный переход */
 }
 .blockin {
     background-color: rgba(255, 255, 255, 0.1); /* Фоновый цвет формы с прозрачностью */
@@ -64,12 +70,12 @@ h3 {
 }
 .scrollable-box {
     background-color: rgb(0, 16, 32); /* Цвет фона левого столбца */
-    width: 90%; /* Ширина блока */
+    width: 95%; /* Ширина блока */
     height: 150px; /* Высота блока */
     overflow-y: auto; /* Вертикальная прокрутка */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
     border: 1px solid white; /* Белая рамка */
-    padding: 10px; /* Отступы внутри блока */
+    padding: 5px; /* Отступы внутри блока */
     font-size: 14px; /* Размер шрифта */
     color: white;
 }
@@ -80,13 +86,15 @@ h3 {
     color: rgb(155, 222, 255);
     border: 1px solid white; /* Белая рамка */
     border-radius: 8px; /* Закругленные углы */
+    min-width: 1200px; /* Минимальная ширина */
+    transition: width 0.5s; /* Плавный переход */
 }
 .right {
-    width: 98%; /* Устанавливаем ширину 100% */
-    height: 93%; /* Устанавливаем высоту 90% */
+    width: 100%; /* Устанавливаем ширину 100% */
+    height: 96%; /* Устанавливаем высоту 90% */
     color: rgb(155, 222, 255);
     position: relative;
-    background: white;
+    background: rgb(0,36,53);
     background-image: url('images/Scheme.jpg'); /* Путь к изображению */
     background-size: contain; /* Изображение будет полностью показано */
     /* background-size: cover; /* Растянуть изображение на весь экран */
@@ -111,10 +119,11 @@ canvas {
     border-radius: 8px; /* Закругленные углы */
 }
 .pressure {
-    width: 90%; /* Устанавливаем ширину 100% */
+    width: 97%; /* Устанавливаем ширину 100% */
     height: 30px; /* Устанавливаем высоту 90% */
     border: 1px solid #000;
     position: relative; /* Или absolute / fixed в зависимости от ваших нужд */
+    background: rgb(190,210,150);
     /*top: 65%; /* Смещение вниз */
     /*left: 1%; /* Смещение вправо */
     margin-top: 5pt;

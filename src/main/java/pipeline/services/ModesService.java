@@ -18,26 +18,38 @@ public class ModesService {
     this.resultComponent = resultComponent;
     this.dataBaseRepository = dataBaseRepository;
   }
-  public String outError(ModesComponent modesComponent) {
-    String str = "Yes";
+  public boolean outError(ModesComponent modesComponent) {
+    modesComponent.setMessage("");
     if (modesComponent.getNameSave() == null || modesComponent.getNameSave().isEmpty()) {
-      str = "Введено неверное название данных";
+      modesComponent.setMessage("Введено неверное название данных");
+      return false;
     } else if (modesComponent.getLineLength() == null) {
-      str = "Отсутствует данные по длине участка";
+      modesComponent.setMessage("Отсутствует данные по длине участка");
+      return false;
     } else if (modesComponent.getPointStart() == null) {
-      str = "Отсутствует данные по высотной отметке начала участка";
+      modesComponent.setMessage("Отсутствует данные по высотной отметке начала участка");
+      return false;
     } else if (modesComponent.getPointEnd() == null) {
-      str = "Отсутствует данные по высотной отметке конца участка";
+      modesComponent.setMessage("Отсутствует данные по высотной отметке конца участка");
+      return false;
     } else if (modesComponent.getDiameter() == null) {
-      str = "Отсутствует данные по диаметру трубопровода";
+      modesComponent.setMessage("Отсутствует данные по диаметру трубопровода");
+      return false;
     } else if (modesComponent.getDensity() == null) {
-      str = "Отсутствует данные по плотности нефтепродукта";
+      modesComponent.setMessage("Отсутствует данные по плотности нефтепродукта");
+      return false;
     } else if (modesComponent.getViscosity() == null) {
-      str = "Отсутствует данные по вязкости нефтепродукта";
+      modesComponent.setMessage("Отсутствует данные по вязкости нефтепродукта");
+      return false;
     } else if (modesComponent.getPumpBrand() == null || modesComponent.getPumpBrand().isEmpty()) {
-      str = "Не выбран насосный агрегат";
+      modesComponent.setMessage("Не выбран насосный агрегат");
+      return false;
     }
-    return str;
+    return true;
+  }
+  public ResultComponent clearResult() {
+    resultComponent.clear();
+    return resultComponent;
   }
   public ResultComponent outResult(ModesComponent modesComponent) {
     // Определяем индекс выбранного насоса
@@ -52,32 +64,43 @@ public class ModesService {
     resultComponent.setSquare(Math.PI * Math.pow(modesComponent.getDiameter() / 1000.0, 2) / 4.0);
     calc(modesComponent, resultComponent.limit_perf[i]);
     resultComponent.setPres_out_head(modesComponent.getDensity() / 100000.0 * 9.8 *
-      (resultComponent.getHead_main() + resultComponent.getHead_booster() +
-        modesComponent.getPointStart()));
+        (resultComponent.getHead_main() + resultComponent.getHead_booster() +
+            modesComponent.getPointStart()));
     resultComponent.setPres_in_final(modesComponent.getDensity() / 100000.0 * 9.8 *
-      (resultComponent.getHead_end() + modesComponent.getPointEnd()));
+        (resultComponent.getHead_end() + modesComponent.getPointEnd()));
+    resultComponent.setTotalHead(resultComponent.getHead_main() + resultComponent.getHead_booster() +
+        (int) Math.round(modesComponent.getPointStart()));
+    resultComponent.setTotalEnd(resultComponent.getHead_end() +
+        (int) Math.round(modesComponent.getPointEnd()));
     return resultComponent;
   }
+  private boolean stack=false;
   private void calc(ModesComponent modesComponent, int a) {
     List<Integer> chart_pomp = new ArrayList<>();
     List<Integer> chart_net = new ArrayList<>();
     List<Integer> chart_perf = new ArrayList<>();
     int pomp = resultComponent.getPomp_a();
     int net;
-    int k = 50;
+    int k = 1;
     int q = k;
+    resultComponent.setHead_main(0);
+    resultComponent.setPerformance(0);
+    stack=false;
     while (pomp > 0) {
       pomp = (int) (resultComponent.getPomp_a() - resultComponent.getPomp_b() *
-        Math.pow(10, -4) * Math.pow(q, 2));
+          Math.pow(10, -4) * Math.pow(q, 2));
       chart_pomp.add(pomp);
       net = (int) calcHeadmain(modesComponent, q);
       chart_net.add(net);
       chart_perf.add(q);
-      if (pomp >= net - k / 5 && pomp < net + k / 5) {
+      if (pomp >= net - 1 && pomp <= net + 1) {
         resultComponent.setHead_main(pomp);
         resultComponent.setPerformance(q);
+        stack=true;
+        net = (int) calcHeadmain(modesComponent, q);
+        stack=false;
       }
-      if (net>pomp+100)
+      if (net > pomp + 150)
         break;
       q += k;
     }
@@ -87,16 +110,21 @@ public class ModesService {
   }
   private double calcHeadmain(ModesComponent modesComponent, int q) {
     // С учетом внутренней толщины трубы 8мм*2 = 16мм
-    double d = (modesComponent.getDiameter() - 16) / 1000.0;
+    double d = (modesComponent.getDiameter() - 16.0) / 1000.0;
     // v = Q / S; м3/ч разделить м2; Перевод ч в секунды = 3600
-    double speed = (double) q / (3600 * resultComponent.getSquare());
-    // Re = v(скорость) * d(диаметр в мм, поэтому делим на 1000)) / m(вязкость в сСт, поэтому умножаем на 10^-6)
-    double reyn = speed * d / (modesComponent.getViscosity() * Math.pow(10, -6));
+    double speed = (double) q / (3600.0 * resultComponent.getSquare());
+    // Re = v(скорость) * d(диаметр в мм, поэтому делим на 1000)) /
+    // m(вязкость в сСт, поэтому умножаем на 10^-6)
+    double reyn = speed * d / (modesComponent.getViscosity() * Math.pow(10.0, -6));
     double lambda = calcLambda(reyn, d);
-    double head_net = 1.02 * lambda * (modesComponent.getLineLength() * 1000.0) *
-      Math.pow(speed, 2) / (d * 2.0 * 9.8) +
-      resultComponent.getHead_end() - resultComponent.getHead_booster() +
-      (modesComponent.getPointEnd() - modesComponent.getPointStart());
+    resultComponent.setIforq(lambda * Math.pow(speed, 2) / (d * 2.0 * 9.8));
+    double head_net = 1.02 * resultComponent.getIforq() * (modesComponent.getLineLength() * 1000.0) +
+        resultComponent.getHead_end() - resultComponent.getHead_booster() +
+        (modesComponent.getPointEnd() - modesComponent.getPointStart());
+    if (stack){
+      resultComponent.setLambda(lambda);
+      resultComponent.setReynolds_number(reyn);
+    }
     return head_net;
   }
   public Double calcLambda(double reyn, double d) {

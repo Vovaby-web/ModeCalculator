@@ -14,14 +14,32 @@ public class ResultComponent {
   private Double lambda;             // Коэффициент гидравлического сопротивления
   private Double reynolds_number;    // Число Рейнольдса
   private Double square;             // Площадь сечения трубопровода
-  private Double pumping;            // Производительность перекачки
   private Integer performance;       // Производительность
+  private Integer totalHead;         // Общий напор станции
+  private Integer totalEnd;          // Общий на конечном пункте
+  private Double iforq;
   public final Integer[] limit_perf = {1250, 2500, 3600};
   public final Integer[] pump_a = {331, 282, 304};
   public final Double[] pump_b = {0.451, 0.792, 0.579};
   private List<Integer> chart_pomp;      // График напора насоса
   private List<Integer> chart_net;       // График напора сети
   private List<Integer> chart_perf;      // График производительности сети
+  public void clear(){
+    pres_out_head=0.0;
+    pres_in_final=0.0;
+    pomp_a=0;
+    pomp_b=0.0;
+    head_main=0;
+    head_end=0;
+    head_booster=0;
+    lambda=0.0;
+    reynolds_number=0.0;
+    square=0.0;
+    performance=0;
+    iforq=0.0;
+    totalHead=0;
+    totalEnd=0;
+  }
   public List<Integer> getChart_pomp() {
     return chart_pomp;
   }
@@ -40,6 +58,24 @@ public class ResultComponent {
   public void setChart_perf(List<Integer> chart_perf) {
     this.chart_perf = chart_perf;
   }
+  public Integer getTotalHead() {
+    return totalHead;
+  }
+  public void setTotalHead(Integer totalHead) {
+    this.totalHead = totalHead;
+  }
+  public Integer getTotalEnd() {
+    return totalEnd;
+  }
+  public void setTotalEnd(Integer totalEnd) {
+    this.totalEnd = totalEnd;
+  }
+  public Double getIforq() {
+    return iforq;
+  }
+  public void setIforq(Double iforq) {
+    this.iforq = iforq;
+  }
   public Integer getPerformance() {
     return performance;
   }
@@ -55,11 +91,17 @@ public class ResultComponent {
   public Double getPres_out_head() {
     return pres_out_head;
   }
+  public String getPres_out_headStr() {
+    return String.format("%.2f",pres_out_head);
+  }
   public void setPres_out_head(Double pres_out_head) {
     this.pres_out_head = pres_out_head;
   }
   public Double getPres_in_final() {
     return pres_in_final;
+  }
+  public String getPres_in_finalStr() {
+    return String.format("%.2f",pres_in_final);
   }
   public void setPres_in_final(Double pres_in_final) {
     this.pres_in_final = pres_in_final;
@@ -109,13 +151,11 @@ public class ResultComponent {
   public Double getSquare() {
     return square;
   }
+  public String getSquareStr() {
+    return String.format("%.2f",square);
+  }
+
   public void setSquare(Double square) {
     this.square = square;
-  }
-  public Double getPumping() {
-    return pumping;
-  }
-  public void setPumping(Double pumping) {
-    this.pumping = pumping;
   }
 }

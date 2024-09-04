@@ -13,6 +13,13 @@ public class ModesComponent {
   private Double density;
   private Double viscosity;
   private String pumpBrand;
+  private String message;
+  public String getMessage() {
+    return message;
+  }
+  public void setMessage(String message) {
+    this.message = message;
+  }
   public void saveMode(ModesComponent modesComponent){
     setNameSave(modesComponent.getNameSave());
     setLineLength(modesComponent.getLineLength());

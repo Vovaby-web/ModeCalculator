@@ -53,6 +53,7 @@ public class HomeController {
     model.addAttribute("username", username);
     model.addAttribute("form", modesComponent);
     model.addAttribute("headform", baseComponent);
+    model.addAttribute("result", modesService.clearResult());
     return "home";
   }
   @PostMapping("/home")
@@ -60,30 +61,40 @@ public class HomeController {
                          @ModelAttribute BaseComponent baseComponent,
                          Model model) {
     model.addAttribute("username", username);
-    if ("Yes".equals(modesService.outError(modesComponent))) {
+    model.addAttribute("result", modesService.clearResult());
+    if (modesService.outError(modesComponent)) {
       ResultComponent res = modesService.outResult(modesComponent);
-      this.modesComponent.saveMode(modesComponent);
-      this.baseComponent.setModes(modesService.loadName(username));
-      // Отображаем элементы, которые требуется нарисовать
-      model.addAttribute("showPressure", true);
+      if (res.getHead_main() > 0 && res.getPerformance() > 0) {
 
-      DecimalFormat df = new DecimalFormat("#.00"); // Формат для двух знаков после запятой
-      model.addAttribute("presout", df.format(res.getPres_out_head()));
-      model.addAttribute("presin", df.format(res.getPres_in_final()));
+        this.modesComponent.saveMode(modesComponent);
+        this.baseComponent.setModes(modesService.loadName(username));
 
-      model.addAttribute("pomp_a", res.getPomp_a());
-      model.addAttribute("pomp_b", res.getPomp_b());
-      // Передаем данные для рисования графиков
-      model.addAttribute("perf", res.getChart_perf());
-      model.addAttribute("head_1", res.getChart_pomp());
-      model.addAttribute("head_2", res.getChart_net());
-      model.addAttribute("line_length", modesComponent.getLineLength());
-      List<Integer> headData=Arrays.asList(res.getHead_main() + res.getHead_booster() +
-          (int) Math.round(modesComponent.getPointStart()), res.getHead_end() +
-          (int) Math.round(modesComponent.getPointEnd()));
-      model.addAttribute("headData", headData);
+        // Отображаем элементы, которые требуется нарисовать
+        model.addAttribute("showPressure", true);
+
+        model.addAttribute("result", res);
+
+        // Передаем данные для рисования графиков
+        model.addAttribute("perfData", res.getChart_perf());
+        model.addAttribute("head_1", res.getChart_pomp());
+        model.addAttribute("head_2", res.getChart_net());
+        model.addAttribute("perfCur", res.getPerformance());
+        model.addAttribute("headCur", res.getHead_main());
+
+        model.addAttribute("line_length", modesComponent.getLineLength());
+        List<Integer> headData = Arrays.asList(res.getTotalHead(), res.getTotalEnd());
+        model.addAttribute("headData", headData);
+        model.addAttribute("iforq", res.getIforq());
+
+        // Формат для двух знаков после запятой
+        model.addAttribute("presout", res.getPres_out_headStr());
+        model.addAttribute("presin", res.getPres_in_finalStr());
+      } else {
+        model.addAttribute("message", "Расчеты по данным параметрам, " +
+            "выполнить невозможно");
+      }
     } else {
-      model.addAttribute("message", modesService.outError(modesComponent));
+      model.addAttribute("message", modesComponent.getMessage());
     }
     model.addAttribute("form", modesComponent);
     model.addAttribute("headform", this.baseComponent);
@@ -123,7 +134,8 @@ public class HomeController {
     }
     byte[] bytes = outputStream.toByteArray();
     HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Disposition", "attachment; filename=example.xlsx");
+    headers.add("Content-Disposition", "attachment; " +
+        "filename=example.xlsx");
     return ResponseEntity.ok()
         .headers(headers)
         .contentType(MediaType.APPLICATION_OCTET_STREAM)
