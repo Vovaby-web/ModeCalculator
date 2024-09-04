@@ -123,7 +123,7 @@ public class ModesService {
         (modesComponent.getPointEnd() - modesComponent.getPointStart());
     if (stack){
       resultComponent.setLambda(lambda);
-      resultComponent.setReynolds_number(reyn);
+      resultComponent.setReynolds_number((int)reyn);
     }
     return head_net;
   }

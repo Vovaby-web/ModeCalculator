@@ -12,7 +12,7 @@ public class ResultComponent {
   private Integer head_end;          // Напор в конечном пункте
   private Integer head_booster;      // Напор подпорного агрегата
   private Double lambda;             // Коэффициент гидравлического сопротивления
-  private Double reynolds_number;    // Число Рейнольдса
+  private Integer reynolds_number;    // Число Рейнольдса
   private Double square;             // Площадь сечения трубопровода
   private Integer performance;       // Производительность
   private Integer totalHead;         // Общий напор станции
@@ -33,7 +33,7 @@ public class ResultComponent {
     head_end=0;
     head_booster=0;
     lambda=0.0;
-    reynolds_number=0.0;
+    reynolds_number=0;
     square=0.0;
     performance=0;
     iforq=0.0;
@@ -136,23 +136,23 @@ public class ResultComponent {
   public void setHead_booster(Integer head_booster) {
     this.head_booster = head_booster;
   }
-  public Double getLambda() {
-    return lambda;
+  public String getLambda() {
+    return String.format("%.4f",lambda);
   }
   public void setLambda(Double lambda) {
     this.lambda = lambda;
   }
-  public Double getReynolds_number() {
+  public Integer getReynolds_number() {
     return reynolds_number;
   }
-  public void setReynolds_number(Double reynolds_number) {
+  public void setReynolds_number(Integer reynolds_number) {
     this.reynolds_number = reynolds_number;
   }
   public Double getSquare() {
     return square;
   }
   public String getSquareStr() {
-    return String.format("%.2f",square);
+    return String.format("%.3f",square);
   }
 
   public void setSquare(Double square) {

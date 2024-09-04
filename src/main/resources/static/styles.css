@@ -13,7 +13,7 @@ header {
     margin: 0; /* Убираем отступы у блока */
     border-radius: 8px; /* Закругленные углы */
     font-size: 14px;
-    min-width: 1400px; /* Минимальная ширина */
+    min-width: 1500px; /* Минимальная ширина */
     transition: width 0.5s; /* Плавный переход */
 }
 h1, h2 {
@@ -44,6 +44,7 @@ h3 {
     padding: 5px; /* Отступы для формы */
     max-width: 350px; /* Максимальная ширина */
     min-width: 300px; /* Минимальная ширина */
+    min-height: 1000px; /* Максимальная ширина */
     transition: width 0.5s; /* Плавный переход */
 }
 .blockin {
@@ -80,13 +81,14 @@ h3 {
     color: white;
 }
 .right-column {
-    width: 80%; /* Ширина правого столбца */
+    width: 100%; /* Ширина правого столбца */
     padding: 10px; /* Отступы для формы */
     background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
     color: rgb(155, 222, 255);
     border: 1px solid white; /* Белая рамка */
     border-radius: 8px; /* Закругленные углы */
-    min-width: 1200px; /* Минимальная ширина */
+    min-width: 1500px; /* Минимальная ширина */
+    min-height: 1000px; /* Максимальная ширина */
     transition: width 0.5s; /* Плавный переход */
 }
 .right {
