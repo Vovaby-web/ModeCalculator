@@ -26,18 +26,18 @@ h2 a {
 h2 a:hover {
     text-decoration: underline; /* Подчеркиваем ссылку при наведении */
 }
-.container {
-    display: flex;
-    height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
-    width: 100%;
-    min-height: 900px; /* Минимальная высота */
-}
 h3 {
     font-size: 14px;
     margin-left: 2pt;
 }
+.container {
+    height: calc(100vh - 20px); /* Высота блока, исключая заголовок */
+    width: 100%;
+    min-height: 900px; /* Минимальная высота */
+    display: flex; /* Устанавливаем grid-контейнер */
+    grid-template-columns: 15% 1fr; /* Левый блок 20%, правый блок занимает оставшееся пространство */
+}
 .left-column {
-    width: 20%; /* Ширина левого столбца */
     background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
     color: rgb(155, 222, 255);
     border: 1px solid white; /* Белая рамка */
@@ -81,7 +81,6 @@ h3 {
     color: white;
 }
 .right-column {
-    width: 75%; /* Ширина правого столбца */
     padding: 10px; /* Отступы для формы */
     background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
     color: rgb(155, 222, 255);
