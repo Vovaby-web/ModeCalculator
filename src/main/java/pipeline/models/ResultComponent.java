@@ -18,7 +18,6 @@ public class ResultComponent {
   private Integer totalHead;         // Общий напор станции
   private Integer totalEnd;          // Общий на конечном пункте
   private Double iforq;
-  public final Integer[] limit_perf = {1250, 2500, 3600};
   public final Integer[] pump_a = {331, 282, 304};
   public final Double[] pump_b = {0.451, 0.792, 0.579};
   private List<Integer> chart_pomp;      // График напора насоса
@@ -158,4 +157,5 @@ public class ResultComponent {
   public void setSquare(Double square) {
     this.square = square;
   }
+
 }

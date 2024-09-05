@@ -14,6 +14,7 @@ public class ModesComponent {
   private Double viscosity;
   private String pumpBrand;
   private String message;
+  public final String[] pomp_name = {"НМ 1250-260", "НМ 2500-230", "НМ 3600-230"};
   public String getMessage() {
     return message;
   }
@@ -29,6 +30,9 @@ public class ModesComponent {
     setDensity(modesComponent.getDensity());
     setViscosity(modesComponent.getViscosity());
     setPumpBrand(modesComponent.getPumpBrand());
+  }
+  public String[] getPomp_name() {
+    return pomp_name;
   }
   public void saveNull(){
     setNameSave("");

@@ -1,4 +1,12 @@
 package pipeline.services;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import pipeline.models.ModesComponent;
@@ -6,6 +14,7 @@ import pipeline.models.SelectSaveParameter;
 import pipeline.models.ResultComponent;
 import pipeline.repository.DataBaseRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 @Service
@@ -62,7 +71,7 @@ public class ModesService {
     resultComponent.setHead_end(6);
     // Площадь сечения трубопровода
     resultComponent.setSquare(Math.PI * Math.pow(modesComponent.getDiameter() / 1000.0, 2) / 4.0);
-    calc(modesComponent, resultComponent.limit_perf[i]);
+    calc(modesComponent);
     resultComponent.setPres_out_head(modesComponent.getDensity() / 100000.0 * 9.8 *
         (resultComponent.getHead_main() + resultComponent.getHead_booster() +
             modesComponent.getPointStart()));
@@ -75,7 +84,7 @@ public class ModesService {
     return resultComponent;
   }
   private boolean stack=false;
-  private void calc(ModesComponent modesComponent, int a) {
+  private void calc(ModesComponent modesComponent) {
     List<Integer> chart_pomp = new ArrayList<>();
     List<Integer> chart_net = new ArrayList<>();
     List<Integer> chart_perf = new ArrayList<>();
@@ -156,5 +165,103 @@ public class ModesService {
   }
   public ModesComponent loadParameter(Integer valueParameter, String login) {
     return dataBaseRepository.loadParameters(valueParameter, login);
+  }
+  public ResponseEntity<byte[]> exportXls (ModesComponent modesComponent){
+    Workbook workbook = new XSSFWorkbook();
+    Sheet sheet = workbook.createSheet("ModesData");
+    xlsData(workbook, sheet,modesComponent);
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+    try {
+      workbook.write(outputStream);
+      workbook.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+    byte[] bytes = outputStream.toByteArray();
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Disposition", "attachment; " +
+        "filename=example.xlsx");
+    return ResponseEntity.ok()
+        .headers(headers)
+        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+        .body(bytes);
+  }
+  private void xlsData(Workbook workbook, Sheet sheet, ModesComponent modesComponent){
+    // Задаем стиль ячейки
+    CellStyle cellStyle = workbook.createCellStyle();
+    // В стиле рисуем рамку
+    cellStyle.setBorderTop(BorderStyle.THIN);
+    cellStyle.setBorderBottom(BorderStyle.THIN);
+    cellStyle.setBorderLeft(BorderStyle.THIN);
+    cellStyle.setBorderRight(BorderStyle.THIN);
+    // Задаем размер шрифта
+    Font font = workbook.createFont();
+    font.setFontHeightInPoints((short) 14);
+    // font.setBold(true); // Установка жирного шрифта (по желанию)
+    // Применение шрифта к стилю ячейки
+    cellStyle.setFont(font);
+
+    // Устанавливаем ширину первого столбца (индекс 0) в 20 символов.
+    // Обратите внимание, что ширина задается в единицах 1/256 от ширины символа.
+    sheet.setColumnWidth(0, 80 * 256);
+    sheet.setColumnWidth(1, 20 * 256);
+    // Объединение ячеек
+    // Здесь `CellRangeAddress` принимает четыре параметра:
+    // начальный индекс строки, конечный индекс строки, начальный индекс столбца и
+    // конечный индекс столбца.
+    // В данном случае это будет объединение ячеек A1 (индекс 0,0) и B1 (индекс 0,1).
+    sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+    Row row = sheet.createRow(0);  // Создаёт первую строку (индекс 0)
+    Cell cell = row.createCell(0); // Создаёт первую ячейку в первой строке
+    cell.setCellStyle(cellStyle);     // Присваиваем стиль ячейке
+    cell.setCellValue("Параметры:");  // Присваивает значение ячейке A1.
+
+    addRow(sheet, cellStyle, row, 1, "Название параметров", modesComponent.getNameSave());
+    addRow(sheet, cellStyle, row, 2, "Длина (км)", modesComponent.getLineLength());
+    addRow(sheet, cellStyle, row, 3, "Геодезическая отметка в начале участка (м)",
+        modesComponent.getPointStart());
+    addRow(sheet, cellStyle, row, 4, "Геодезическая отметка в конце участка (м)",
+        modesComponent.getPointEnd());
+    addRow(sheet, cellStyle, row, 5, "Диаметр (мм)", modesComponent.getDiameter());
+    addRow(sheet, cellStyle, row, 6, "Плотность (кг/м3)", modesComponent.getDensity());
+    addRow(sheet, cellStyle, row, 7, "Вязкость (сСт)", modesComponent.getViscosity());
+    String str=modesComponent.getPomp_name()[Integer.parseInt(modesComponent.getPumpBrand())];
+    addRow(sheet, cellStyle, row, 8, "Марка насоса", str);
+
+    sheet.addMergedRegion(new CellRangeAddress(10, 10, 0, 1));
+    row = sheet.createRow(10);
+    cell = row.createCell(0);
+    cell.setCellStyle(cellStyle);
+    cell.setCellValue("Результаты расчета:");
+
+    addRow(sheet, cellStyle, row, 11, "Толщина внутренней стенки трубы (мм)", 8);
+    addRow(sheet, cellStyle, row, 11, "Площадь трубы (мм)", resultComponent.getSquareStr());
+    addRow(sheet, cellStyle, row, 12, "Напор подпорного агрегата (м)", resultComponent.getHead_booster());
+    addRow(sheet, cellStyle, row, 13, "Напор магистрального агрегата (м)", resultComponent.getHead_main());
+    addRow(sheet, cellStyle, row, 14, "Общий напор головной станции (м)", resultComponent.getTotalHead());
+    addRow(sheet, cellStyle, row, 15, "Давление на головной станции (кгс/см2)",
+        resultComponent.getPres_out_headStr());
+    addRow(sheet, cellStyle, row, 16, "Общий напор в конечном пункте (м)", resultComponent.getTotalEnd());
+    addRow(sheet, cellStyle, row, 17, "Давление в конечном пункте (кгс/см2)",
+        resultComponent.getPres_in_finalStr());
+    addRow(sheet, cellStyle, row, 18, "Производительность перекачки (Q) (м3/ч)",
+        resultComponent.getPerformance());
+    addRow(sheet, cellStyle, row, 19, "Число Рейнольдса (Re)", resultComponent.getReynolds_number());
+  }
+  private void addRow(Sheet sheet, CellStyle cellStyle, Row row, int num, String str, Object par){
+    row = sheet.createRow(num);
+    Cell cell = row.createCell(0);
+    cell.setCellStyle(cellStyle);
+    cell.setCellValue(str);
+    cell = row.createCell(1);
+    cell.setCellStyle(cellStyle);
+    if (par instanceof String) {
+      cell.setCellValue((String) par);
+    } else if (par instanceof Number) { // Это охватывает Integer, Double и другие
+      cell.setCellValue(((Number) par).doubleValue()); // Преобразуем в double
+    } else if (par instanceof Boolean) {
+      cell.setCellValue((Boolean) par);
+    }
   }
 }

@@ -119,26 +119,6 @@ public class HomeController {
   }
   @PostMapping("/export")
   public ResponseEntity<byte[]> exportData() {
-    Workbook workbook = new XSSFWorkbook();
-    Sheet sheet = workbook.createSheet("Example Sheet");
-    Row row = sheet.createRow(0);
-    Cell cell = row.createCell(0);
-    cell.setCellValue("Hello, Excel!");
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    try {
-      workbook.write(outputStream);
-      workbook.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    }
-    byte[] bytes = outputStream.toByteArray();
-    HttpHeaders headers = new HttpHeaders();
-    headers.add("Content-Disposition", "attachment; " +
-        "filename=example.xlsx");
-    return ResponseEntity.ok()
-        .headers(headers)
-        .contentType(MediaType.APPLICATION_OCTET_STREAM)
-        .body(bytes);
+    return modesService.exportXls(modesComponent);
   }
 }
