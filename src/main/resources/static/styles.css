@@ -35,7 +35,8 @@ h3 {
     width: 100%;
     min-height: 900px; /* Минимальная высота */
     display: flex; /* Устанавливаем grid-контейнер */
-    grid-template-columns: 15% 1fr; /* Левый блок 20%, правый блок занимает оставшееся пространство */
+    /* Левый блок 20%, правый блок занимает оставшееся пространство */
+    grid-template-columns: 15% 1fr;
 }
 .left-column {
     background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
@@ -45,6 +46,15 @@ h3 {
     padding: 5px; /* Отступы для формы */
     max-width: 350px; /* Максимальная ширина */
     min-width: 300px; /* Минимальная ширина */
+    transition: width 0.5s; /* Плавный переход */
+}
+.right-column {
+    padding: 10px; /* Отступы для формы */
+    background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
+    color: rgb(155, 222, 255);
+    border: 1px solid white; /* Белая рамка */
+    border-radius: 8px; /* Закругленные углы */
+    min-width: 1300px; /* Минимальная ширина */
     transition: width 0.5s; /* Плавный переход */
 }
 .blockin {
@@ -79,15 +89,6 @@ h3 {
     padding: 5px; /* Отступы внутри блока */
     font-size: 14px; /* Размер шрифта */
     color: white;
-}
-.right-column {
-    padding: 10px; /* Отступы для формы */
-    background-color: rgb(0, 36, 53); /* Цвет фона левого столбца */
-    color: rgb(155, 222, 255);
-    border: 1px solid white; /* Белая рамка */
-    border-radius: 8px; /* Закругленные углы */
-    min-width: 1300px; /* Минимальная ширина */
-    transition: width 0.5s; /* Плавный переход */
 }
 .right {
     width: 100%; /* Устанавливаем ширину 100% */
